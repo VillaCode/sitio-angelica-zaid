@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Angélica &amp; Zaid · 26 de diciembre de 2026</title>
+<meta name="description" content="Nos casamos el 26 de diciembre de 2026 en Culiacán, Sinaloa. Aquí encuentras la ceremonia, la recepción, el código de vestimenta y la confirmación de asistencia.">
+<meta name="theme-color" content="#5F6347">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Angélica &amp; Zaid · 26 de diciembre de 2026">
+<meta property="og:description" content="Nos casamos en Culiacán. Confirma tu asistencia aquí.">
+<meta property="og:image" content="img/fotos/hero.webp">
+<meta property="og:locale" content="es_MX">
+
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/bodoni-moda-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/parisienne-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/quattrocento-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="image" href="img/fotos/hero.webp" fetchpriority="high">
+<link rel="stylesheet" href="css/estilos.css">
+
+<script>
+  /* Mejora progresiva: la clase se pone ANTES de pintar, así que si el
+     JavaScript no corre, todo el contenido queda visible tal cual. */
+  document.documentElement.className += " con-js";
+</script>
+</head>
+
+<body>
+
+<a class="salta-al-contenido" href="#contenido">Saltar al contenido</a>
+
+<!-- ══════════════ NAV ══════════════ -->
+<header class="nav" id="nav" hidden>
+  <nav class="nav__interior" aria-label="Secciones">
+    <a class="nav__marca" href="#inicio"><span>A</span><span>Z</span></a>
+    <button class="nav__abrir" id="navAbrir" aria-expanded="false" aria-controls="navLista">
+      <span class="nav__hamburguesa" aria-hidden="true"></span>
+      <span class="visualmente-oculto">Abrir menú</span>
+    </button>
+    <ul class="nav__lista" id="navLista">
+      <li><a href="#dia">El día</a></li>
+      <li><a href="#vestimenta">Vestimenta</a></li>
+      <li><a href="#itinerario">Itinerario</a></li>
+      <li><a href="#regalos">Regalos</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a class="nav__cta" href="#confirmar">Confirmar</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="contenido">
+
+<!-- ══════════════ PORTADA ══════════════ -->
+<section class="portada" id="inicio">
+  <div class="portada__foto">
+    <picture>
+      <!-- En vertical la foto apaisada recorta las caras, así que el
+           teléfono recibe un encuadre propio. -->
+      <source media="(max-width: 700px)" srcset="img/fotos/hero-movil.webp" width="1200" height="1600">
+      <img src="img/fotos/hero.webp" alt="Angélica y Zaid tomados de la mano frente a la sierra al atardecer" width="2200" height="1467" fetchpriority="high">
+    </picture>
+  </div>
+  <div class="portada__velo" aria-hidden="true"></div>
+
+  <div class="portada__texto">
+    <p class="portada__gui">Nuestra boda</p>
+    <h1 class="portada__nombres">
+      <span class="portada__a">Angélica</span>
+      <span class="portada__amp">&amp;</span>
+      <span class="portada__z">Zaid</span>
+    </h1>
+    <p class="portada__fecha"><span>26</span><i aria-hidden="true">·</i><span>Dic</span><i aria-hidden="true">·</i><span>2026</span></p>
+  </div>
+
+  <a class="portada__baja" href="#cuenta" aria-label="Bajar a la cuenta regresiva">
+    <span class="portada__baja-linea" aria-hidden="true"></span>
+  </a>
+</section>
+
+<!-- ══════════════ CUENTA REGRESIVA ══════════════ -->
+<section class="cuenta" id="cuenta" aria-labelledby="cuentaTitulo">
+  <div class="envoltura">
+    <h2 class="cuenta__titulo" id="cuentaTitulo">Solo faltan</h2>
+
+    <div class="cuenta__reloj" id="reloj" role="timer" aria-live="off">
+      <div class="cuenta__unidad"><span class="cuenta__num" id="cDias">—</span><span class="cuenta__eti">días</span></div>
+      <div class="cuenta__unidad"><span class="cuenta__num" id="cHoras">—</span><span class="cuenta__eti">horas</span></div>
+      <div class="cuenta__unidad"><span class="cuenta__num" id="cMin">—</span><span class="cuenta__eti">min</span></div>
+      <div class="cuenta__unidad"><span class="cuenta__num" id="cSeg">—</span><span class="cuenta__eti">seg</span></div>
+    </div>
+    <p class="visualmente-oculto" id="relojTexto" aria-live="polite"></p>
+    <noscript><p class="cuenta__sinjs">26 de diciembre de 2026, 2:00 pm</p></noscript>
+  </div>
+</section>
+
+<!-- ══════════════ DEDICATORIA ══════════════ -->
+<section class="dedicatoria campo-olivo" aria-labelledby="dedTitulo">
+  <div class="envoltura dedicatoria__reja">
+
+    <div class="polaroides" data-revela>
+      <img class="polaroide polaroide--a" src="img/fotos/polaroid-1.webp"
+           alt="Angélica y Zaid caminando junto al mirador" width="702" height="784" loading="lazy">
+      <img class="polaroide polaroide--b" src="img/fotos/polaroid-2.webp"
+           alt="Angélica y Zaid abrazados" width="646" height="740" loading="lazy">
+    </div>
+
+    <div class="dedicatoria__palabras" data-revela>
+      <h2 class="visualmente-oculto" id="dedTitulo">Nuestra dedicatoria</h2>
+      <p class="dedicatoria__verso">Tantos siglos, tantos mundos, tanto espacio&hellip; y coincidir.</p>
+      <p class="dedicatoria__gracias">Gracias por celebrar con nosotros este nuevo capítulo llamado <em>los Villa Herrera</em>.</p>
+      <blockquote class="dedicatoria__cita">
+        <p>Hagamos todo con amor.</p>
+        <cite>1 Corintios 16:14</cite>
+      </blockquote>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ PADRES ══════════════ -->
+<section class="padres campo-olivo" aria-labelledby="padresTitulo">
+  <div class="envoltura">
+    <img class="padres__vela" src="img/arte/s-velas.webp" alt="" width="232" height="213" loading="lazy" data-revela>
+    <p class="rubrica">Con la bendición de</p>
+    <h2 class="titulo-seccion" id="padresTitulo">Nuestros padres</h2>
+
+    <div class="padres__reja">
+      <div class="padres__par" data-revela>
+        <p class="padres__nombre">Angélica Ma. Mendívil</p>
+        <p class="padres__nombre">Eduardo José Herrera Zavala</p>
+        <p class="padres__rol">Padres de la novia</p>
+      </div>
+      <div class="padres__par" data-revela>
+        <p class="padres__nombre">Margarita R. Bernal Cota</p>
+        <p class="padres__nombre">Zaid Villa Serrano</p>
+        <p class="padres__rol">Padres del novio</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ EL DÍA · ETIQUETAS ══════════════ -->
+<section class="dia campo-papel" id="dia" aria-labelledby="diaTitulo">
+  <div class="envoltura">
+    <p class="rubrica rubrica--oscura">26 de diciembre de 2026</p>
+    <h2 class="visualmente-oculto" id="diaTitulo">Ceremonia y recepción</h2>
+    <p class="dia__pista" id="diaPista">Toca cada etiqueta para ver los detalles</p>
+
+    <div class="etiquetas">
+
+      <!-- CEREMONIA -->
+      <div class="etiqueta" data-revela>
+        <button class="etiqueta__cara etiqueta__cara--frente" type="button"
+                aria-expanded="false" aria-controls="detalleCeremonia" data-voltea>
+          <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
+          <img class="etiqueta__arte" src="img/arte/etiqueta-ceremonia.webp"
+               alt="Ilustración de los novios enmarcada en una etiqueta ornamental" width="407" height="749" loading="lazy">
+          <span class="etiqueta__nombre">Ceremonia</span>
+        </button>
+
+        <div class="etiqueta__cara etiqueta__cara--reverso" id="detalleCeremonia" hidden>
+          <h3 class="etiqueta__nombre etiqueta__nombre--reverso">Ceremonia</h3>
+          <p class="etiqueta__lugar">Parroquia San Gabriel</p>
+          <p class="etiqueta__dir">Av. Gabriel Leyva, Desarrollo Urbano Tres Ríos<br>80020, Culiacán, Sin.</p>
+          <p class="etiqueta__hora">2:00 <span>pm</span></p>
+          <a class="boton boton--linea"
+             href="https://www.google.com/maps/search/?api=1&amp;query=Parroquia+San+Gabriel+Tres+Rios+Culiacan"
+             target="_blank" rel="noopener">Ver ubicación</a>
+          <button class="etiqueta__cerrar" type="button" data-cierra>Volver a la etiqueta</button>
+        </div>
+      </div>
+
+      <!-- RECEPCIÓN -->
+      <div class="etiqueta" data-revela>
+        <button class="etiqueta__cara etiqueta__cara--frente" type="button"
+                aria-expanded="false" aria-controls="detalleRecepcion" data-voltea>
+          <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
+          <img class="etiqueta__arte" src="img/arte/etiqueta-recepcion.webp"
+               alt="Ilustración de dos perritos bailando bajo una bola disco, en una etiqueta ornamental" width="603" height="745" loading="lazy">
+          <span class="etiqueta__nombre">Recepción</span>
+        </button>
+
+        <div class="etiqueta__cara etiqueta__cara--reverso" id="detalleRecepcion" hidden>
+          <h3 class="etiqueta__nombre etiqueta__nombre--reverso">Recepción</h3>
+          <p class="etiqueta__lugar">Casa Cordera</p>
+          <p class="etiqueta__dir">Calle principal S/N, Bellavista<br>80301, Culiacán, Sin.</p>
+          <p class="etiqueta__hora">5:00 <span>pm</span></p>
+          <a class="boton boton--linea"
+             href="https://www.google.com/maps/search/?api=1&amp;query=Casa+Cordera+Bellavista+Culiacan"
+             target="_blank" rel="noopener">Ver ubicación</a>
+          <button class="etiqueta__cerrar" type="button" data-cierra>Volver a la etiqueta</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ VESTIMENTA ══════════════ -->
+<section class="vestimenta" id="vestimenta" aria-labelledby="vestTitulo">
+  <div class="vestimenta__foto">
+    <img src="img/fotos/vestimenta.webp" alt="Angélica y Zaid caminando por el mirador" width="1900" height="1267" loading="lazy">
+  </div>
+  <div class="vestimenta__velo" aria-hidden="true"></div>
+
+  <div class="envoltura envoltura--angosta vestimenta__texto" data-revela>
+    <p class="rubrica">Código de</p>
+    <h2 class="titulo-seccion titulo-seccion--claro" id="vestTitulo">Vestimenta</h2>
+    <p class="vestimenta__nivel">Formal</p>
+    <p class="vestimenta__nota">Te pedimos evitar los tonos tintos, verdes, blanco, beige y los colores claros: están reservados para la novia y la paleta del jardín.</p>
+    <a class="boton boton--solido" href="https://www.pinterest.com/search/pins/?q=vestido%20formal%20boda%20jardin%20invitada" target="_blank" rel="noopener">Ver ideas de outfit</a>
+  </div>
+</section>
+
+<!-- ══════════════ ITINERARIO ══════════════ -->
+<section class="itinerario campo-olivo" id="itinerario" aria-labelledby="itiTitulo">
+  <div class="envoltura envoltura--angosta">
+    <img class="itinerario__lacre" src="img/arte/sello-rosa.webp" alt="" width="244" height="255" loading="lazy" data-revela>
+    <h2 class="titulo-seccion" id="itiTitulo">Itinerario</h2>
+
+    <ol class="linea">
+      <span class="linea__hilo" aria-hidden="true"><i id="lineaHilo"></i></span>
+
+      <li class="linea__paso" data-revela>
+        <img class="linea__sticker" src="img/arte/s-iglesia.webp" alt="" width="245" height="257" loading="lazy">
+        <div class="linea__cuerpo">
+          <p class="linea__hora"><time datetime="14:00">2:00 pm</time></p>
+          <h3 class="linea__que">Ceremonia religiosa</h3>
+          <p class="linea__donde">Parroquia de San Gabriel</p>
+        </div>
+      </li>
+
+      <li class="linea__paso" data-revela>
+        <img class="linea__sticker" src="img/arte/s-cocteles.webp" alt="" width="198" height="162" loading="lazy">
+        <div class="linea__cuerpo">
+          <p class="linea__hora"><time datetime="16:00">4:00 pm</time></p>
+          <h3 class="linea__que">Coctel de bienvenida</h3>
+          <p class="linea__donde">Casa Cordera</p>
+        </div>
+      </li>
+
+      <li class="linea__paso" data-revela>
+        <img class="linea__sticker" src="img/arte/s-anillos.webp" alt="" width="148" height="182" loading="lazy">
+        <div class="linea__cuerpo">
+          <p class="linea__hora"><time datetime="16:20">4:20 pm</time></p>
+          <h3 class="linea__que">Civil</h3>
+          <p class="linea__donde">Casa Cordera</p>
+        </div>
+      </li>
+
+      <li class="linea__paso" data-revela>
+        <img class="linea__sticker" src="img/arte/s-botellas.webp" alt="" width="206" height="204" loading="lazy">
+        <div class="linea__cuerpo">
+          <p class="linea__hora"><time datetime="17:00">5:00 pm</time></p>
+          <h3 class="linea__que">Recepción</h3>
+          <p class="linea__donde">Casa Cordera</p>
+        </div>
+      </li>
+
+      <li class="linea__paso" data-revela>
+        <img class="linea__sticker linea__sticker--baila" src="img/arte/s-disco-baila.webp" alt="" width="167" height="197" loading="lazy">
+        <div class="linea__cuerpo">
+          <p class="linea__hora"><time datetime="19:00">7:00 pm</time></p>
+          <h3 class="linea__que">Fiesta</h3>
+          <p class="linea__donde">¡A bailar!</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════════ REGALOS ══════════════ -->
+<section class="regalos" id="regalos" aria-labelledby="regTitulo">
+  <div class="envoltura envoltura--angosta regalos__caja" data-revela>
+    <h2 class="titulo-seccion titulo-seccion--claro" id="regTitulo">Sugerencia de regalo</h2>
+    <p class="regalos__intro">Tu presencia es nuestro mejor regalo. Si además quieres tener un detalle con nosotros, preparamos una mesa de regalos. Cada detalle será recibido con mucho cariño.</p>
+
+    <div class="regalos__mesas">
+      <div class="mesa">
+        <img class="mesa__sticker" src="img/arte/s-regalos.webp" alt="" width="208" height="228" loading="lazy">
+        <p class="mesa__tienda">Liverpool</p>
+        <p class="mesa__evento">Evento 02938475</p>
+        <a class="boton boton--linea-clara" href="https://mesaderegalos.liverpool.com.mx/" target="_blank" rel="noopener">Abrir Liverpool</a>
+      </div>
+      <div class="mesa">
+        <img class="mesa__sticker" src="img/arte/s-tarjeta.webp" alt="" width="213" height="170" loading="lazy">
+        <p class="mesa__tienda">Amazon</p>
+        <p class="mesa__evento">Evento 02938475</p>
+        <a class="boton boton--linea-clara" href="https://www.amazon.com.mx/wedding/" target="_blank" rel="noopener">Abrir Amazon</a>
+      </div>
+    </div>
+
+    <hr class="regalos__filo">
+
+    <p class="regalos__intro">O si prefieres, puedes contribuir con lo que desees para nuestra luna de miel. No olvides incluir tu nombre: nos gustaría agradecerte.</p>
+
+    <dl class="cuenta-banco">
+      <div><dt>Banco</dt><dd>BBVA</dd></div>
+      <div><dt>A nombre de</dt><dd>Zaid Villa</dd></div>
+      <div>
+        <dt>CLABE</dt>
+        <dd><span class="cuenta-banco__num" id="clabe">**********675</span>
+          <button class="copiar" type="button" data-copia="#clabe">Copiar</button></dd>
+      </div>
+      <div>
+        <dt>Tarjeta de débito</dt>
+        <dd><span class="cuenta-banco__num" id="tarjeta">******8165</span>
+          <button class="copiar" type="button" data-copia="#tarjeta">Copiar</button></dd>
+      </div>
+    </dl>
+
+    <p class="regalos__pie">También habrá una caja en la recepción para quien prefiera dar un presente en efectivo.</p>
+    <img class="regalos__carro" src="img/arte/s-carro.webp" alt="" width="405" height="321" loading="lazy">
+  </div>
+</section>
+
+<!-- ══════════════ GALERÍA ══════════════ -->
+<section class="galeria campo-papel" id="galeria" aria-labelledby="galTitulo">
+  <div class="envoltura">
+    <h2 class="titulo-seccion titulo-seccion--oscuro" id="galTitulo">Galería</h2>
+
+    <ul class="mosaico" id="mosaico">
+      <li><button type="button" class="mosaico__pieza mosaico__pieza--ancha" data-abre="0"><img src="img/fotos/g1.webp" alt="Angélica y Zaid abrazados frente a la sierra" width="1200" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza" data-abre="1"><img src="img/fotos/g7.webp" alt="Zaid tomando la mano de Angélica" width="534" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza" data-abre="2"><img src="img/fotos/g2.webp" alt="Los novios caminando de la mano" width="1200" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza" data-abre="3"><img src="img/fotos/g3.webp" alt="Angélica y Zaid sonriendo" width="1200" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza" data-abre="4"><img src="img/fotos/g8.webp" alt="Los novios de pie en el mirador" width="534" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza mosaico__pieza--ancha" data-abre="5"><img src="img/fotos/g4.webp" alt="Angélica recargada en el hombro de Zaid" width="1200" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza" data-abre="6"><img src="img/fotos/g5.webp" alt="Los novios frente al barandal" width="1200" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza" data-abre="7"><img src="img/fotos/g6.webp" alt="Angélica y Zaid al atardecer" width="1200" height="800" loading="lazy"></button></li>
+      <li><button type="button" class="mosaico__pieza" data-abre="8"><img src="img/fotos/g9.webp" alt="Retrato de Angélica y Zaid" width="1200" height="800" loading="lazy"></button></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════ CONFIRMAR ══════════════ -->
+<section class="confirmar campo-olivo" id="confirmar" aria-labelledby="confTitulo">
+  <div class="envoltura envoltura--angosta">
+
+    <div class="monograma" data-revela aria-hidden="true">
+      <img src="img/arte/mono-a.webp" alt="" width="158" height="190">
+      <img src="img/arte/mono-z.webp" alt="" width="126" height="190">
+    </div>
+
+    <p class="rubrica">Gracias por acompañarnos</p>
+    <h2 class="titulo-seccion" id="confTitulo">Hemos apartado para ti</h2>
+
+    <p class="pases" data-revela><span class="pases__num">2</span> <span class="pases__eti">pases</span></p>
+
+    <p class="confirmar__nota">Adoramos a los pequeños de la familia y de los amigos; aun así, esta celebración está pensada solo para adultos.</p>
+    <p class="confirmar__limite">Te pedimos confirmar antes del <strong>1 de diciembre de 2026</strong>.</p>
+
+    <form class="forma" id="forma" novalidate>
+
+      <fieldset class="forma__grupo">
+        <legend>Invitado 1</legend>
+        <div class="campo">
+          <label for="n1">Nombre y apellidos</label>
+          <input id="n1" name="n1" type="text" autocomplete="name" required>
+          <p class="campo__error" data-error-de="n1" hidden></p>
+        </div>
+        <div class="campo__par">
+          <div class="campo">
+            <label for="t1">Teléfono</label>
+            <input id="t1" name="t1" type="tel" inputmode="tel" autocomplete="tel">
+          </div>
+          <div class="campo">
+            <label for="a1">¿Nos acompañas?</label>
+            <select id="a1" name="a1" required>
+              <option value="">Elige una opción</option>
+              <option value="si">Sí, ahí estaré</option>
+              <option value="no">No podré asistir</option>
+            </select>
+            <p class="campo__error" data-error-de="a1" hidden></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="forma__grupo">
+        <legend>Invitado 2</legend>
+        <div class="campo">
+          <label for="n2">Nombre y apellidos</label>
+          <input id="n2" name="n2" type="text" autocomplete="name">
+        </div>
+        <div class="campo__par">
+          <div class="campo">
+            <label for="t2">Teléfono</label>
+            <input id="t2" name="t2" type="tel" inputmode="tel">
+          </div>
+          <div class="campo">
+            <label for="a2">¿Nos acompaña?</label>
+            <select id="a2" name="a2">
+              <option value="">Elige una opción</option>
+              <option value="si">Sí, ahí estará</option>
+              <option value="no">No podrá asistir</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="campo">
+        <label for="deseos">Déjanos tus buenos deseos</label>
+        <textarea id="deseos" name="deseos" rows="4" placeholder="Escribe aquí…"></textarea>
+      </div>
+
+      <button class="boton boton--solido boton--ancho" type="submit">Enviar confirmación</button>
+      <p class="forma__aviso" id="formaAviso" role="status"></p>
+    </form>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="pie campo-olivo">
+  <div class="envoltura">
+    <p class="pie__firma">Angélica &amp; Zaid</p>
+    <p class="pie__fecha">Culiacán, Sinaloa · 26 de diciembre de 2026</p>
+    <a class="pie__arriba" href="#inicio">Volver al inicio</a>
+  </div>
+</footer>
+
+<!-- ══════════════ VISOR DE GALERÍA ══════════════ -->
+<div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Galería de fotos" hidden>
+  <button class="visor__cerrar" id="visorCerrar" type="button" aria-label="Cerrar galería">&times;</button>
+  <button class="visor__flecha visor__flecha--izq" id="visorPrev" type="button" aria-label="Foto anterior">&#8249;</button>
+  <figure class="visor__marco">
+    <img id="visorImg" src="" alt="">
+    <figcaption id="visorPie"></figcaption>
+  </figure>
+  <button class="visor__flecha visor__flecha--der" id="visorSig" type="button" aria-label="Foto siguiente">&#8250;</button>
+</div>
+
+<script src="js/app.js" defer></script>
+</body>
+</html>

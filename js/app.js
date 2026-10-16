@@ -11,7 +11,7 @@
               Si la dejas vacía, las confirmaciones llegan por WhatsApp.
      WHATSAPP: número con lada de país, solo dígitos.               */
   var DESTINO  = "";
-  var WHATSAPP = "526671234567";   // ← cambiar por el número real
+  var WHATSAPP = "526671020246";
   /* ═════════════════════════════════════════════════════════ */
 
   var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

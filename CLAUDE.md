@@ -87,9 +87,9 @@ There is no test suite. Before pushing, at minimum:
 ## Pending work
 
 Content the couple still needs to provide:
-- [ ] Real WhatsApp number in `js/app.js` (`WHATSAPP` constant) — current one is a placeholder
-- [ ] RSVP deadline in `index.html` (`.confirmar__limite`) — "1 de diciembre" is a guess
-- [ ] Tornafiesta time (itinerary shows "Hora por confirmar") and its sticker from Angie,
+- [x] WhatsApp number in `js/app.js` (`WHATSAPP` = 526671020246, given by the owner on 2026-10-15)
+- [x] RSVP deadline: 15 de diciembre de 2026
+- [ ] Tornafiesta: 1:00 am is a PROVISIONAL time, to be confirmed. Its sticker from Angie,
       in the same style as the others. The last `:nth-child(6)` delay rule is ready for it
 - [ ] Vestimenta: "Formal" and the note text are waiting for the couple's confirmation
 - [ ] Decide whether the bank details should stay on a public page

@@ -6,15 +6,21 @@
 <title>Angélica &amp; Zaid · 26 de diciembre de 2026</title>
 <meta name="description" content="Nos casamos el 26 de diciembre de 2026 en Culiacán, Sinaloa. Aquí encuentras la ceremonia, la recepción, el código de vestimenta y la confirmación de asistencia.">
 <meta name="theme-color" content="#5F6347">
+<meta name="robots" content="noindex, nofollow">
 
+<!-- Vista previa al compartir (WhatsApp, etc.): la imagen DEBE ser una URL absoluta a un JPG -->
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://villacode.github.io/sitio-angelica-zaid/">
 <meta property="og:title" content="Angélica &amp; Zaid · 26 de diciembre de 2026">
 <meta property="og:description" content="Nos casamos en Culiacán. Confirma tu asistencia aquí.">
-<meta property="og:image" content="img/fotos/hero.webp">
+<meta property="og:image" content="https://villacode.github.io/sitio-angelica-zaid/img/compartir.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
 
-<link rel="preload" as="font" type="font/woff2" href="css/fuentes/bodoni-moda-latin-400-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="css/fuentes/parisienne-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/italiana-latin-400-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="css/fuentes/sacramento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/quattrocento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="image" href="img/fotos/hero.webp" fetchpriority="high">
 <link rel="stylesheet" href="css/estilos.css">
@@ -100,9 +106,9 @@
 
     <div class="polaroides" data-revela>
       <img class="polaroide polaroide--a" src="img/fotos/polaroid-1.webp"
-           alt="Angélica y Zaid caminando junto al mirador" width="702" height="784" loading="lazy">
+           alt="Angélica y Zaid tomados de la mano en el mirador" width="706" height="822" loading="lazy">
       <img class="polaroide polaroide--b" src="img/fotos/polaroid-2.webp"
-           alt="Angélica y Zaid abrazados" width="646" height="740" loading="lazy">
+           alt="Angélica y Zaid abrazados" width="694" height="818" loading="lazy">
     </div>
 
     <div class="dedicatoria__palabras" data-revela>
@@ -149,47 +155,67 @@
 
     <div class="etiquetas">
 
-      <!-- CEREMONIA -->
-      <div class="etiqueta" data-revela>
-        <button class="etiqueta__cara etiqueta__cara--frente" type="button"
-                aria-expanded="false" aria-controls="detalleCeremonia" data-voltea>
-          <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
-          <img class="etiqueta__arte" src="img/arte/etiqueta-ceremonia.webp"
-               alt="Ilustración de los novios enmarcada en una etiqueta ornamental" width="407" height="749" loading="lazy">
-          <span class="etiqueta__nombre">Ceremonia</span>
-        </button>
+      <!-- Cada etiqueta: .etiqueta__alza se levanta a mitad del giro,
+           .etiqueta__giro hace el rotateY y lleva las dos caras.
+           Frente y reverso tienen su propio lacre para que no desaparezca. -->
 
-        <div class="etiqueta__cara etiqueta__cara--reverso" id="detalleCeremonia" hidden>
-          <h3 class="etiqueta__nombre etiqueta__nombre--reverso">Ceremonia</h3>
-          <p class="etiqueta__lugar">Parroquia San Gabriel</p>
-          <p class="etiqueta__dir">Av. Gabriel Leyva, Desarrollo Urbano Tres Ríos<br>80020, Culiacán, Sin.</p>
-          <p class="etiqueta__hora">2:00 <span>pm</span></p>
-          <a class="boton boton--linea"
-             href="https://www.google.com/maps/search/?api=1&amp;query=Parroquia+San+Gabriel+Tres+Rios+Culiacan"
-             target="_blank" rel="noopener">Ver ubicación</a>
-          <button class="etiqueta__cerrar" type="button" data-cierra>Volver a la etiqueta</button>
+      <!-- CEREMONIA -->
+      <div class="etiqueta etiqueta--ceremonia" data-revela>
+        <div class="etiqueta__alza">
+          <div class="etiqueta__giro">
+            <button class="etiqueta__cara etiqueta__cara--frente" type="button"
+                    aria-expanded="false" aria-controls="detalleCeremonia" data-voltea>
+              <img class="etiqueta__arte" src="img/arte/etiqueta-ceremonia.webp"
+                   alt="Ilustración de los novios enmarcada en una etiqueta ornamental" width="485" height="900" loading="lazy">
+              <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
+              <span class="etiqueta__nombre">Ceremonia</span>
+            </button>
+
+            <div class="etiqueta__cara etiqueta__cara--reverso" id="detalleCeremonia" hidden>
+              <img class="etiqueta__arte" src="img/arte/etiqueta-ceremonia-reverso.webp" alt="" width="485" height="900">
+              <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
+              <div class="etiqueta__info">
+                <h3 class="etiqueta__nombre etiqueta__nombre--reverso">Ceremonia</h3>
+                <p class="etiqueta__lugar">Parroquia San Gabriel</p>
+                <p class="etiqueta__dir">Av. Gabriel Leyva, Desarrollo Urbano Tres Ríos<br>80020, Culiacán, Sin.</p>
+                <p class="etiqueta__hora">2:00 <span>pm</span></p>
+                <a class="boton boton--linea etiqueta__mapa"
+                   href="https://www.google.com/maps/search/?api=1&amp;query=Parroquia+San+Gabriel+Tres+Rios+Culiacan"
+                   target="_blank" rel="noopener">Ver ubicación</a>
+                <button class="etiqueta__cerrar" type="button" data-cierra>Volver</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- RECEPCIÓN -->
-      <div class="etiqueta" data-revela>
-        <button class="etiqueta__cara etiqueta__cara--frente" type="button"
-                aria-expanded="false" aria-controls="detalleRecepcion" data-voltea>
-          <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
-          <img class="etiqueta__arte" src="img/arte/etiqueta-recepcion.webp"
-               alt="Ilustración de dos perritos bailando bajo una bola disco, en una etiqueta ornamental" width="603" height="745" loading="lazy">
-          <span class="etiqueta__nombre">Recepción</span>
-        </button>
+      <div class="etiqueta etiqueta--recepcion" data-revela>
+        <div class="etiqueta__alza">
+          <div class="etiqueta__giro">
+            <button class="etiqueta__cara etiqueta__cara--frente" type="button"
+                    aria-expanded="false" aria-controls="detalleRecepcion" data-voltea>
+              <img class="etiqueta__arte" src="img/arte/etiqueta-recepcion.webp"
+                   alt="Ilustración de dos perritos bailando bajo una bola disco, en una etiqueta ornamental" width="518" height="900" loading="lazy">
+              <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
+              <span class="etiqueta__nombre">Recepción</span>
+            </button>
 
-        <div class="etiqueta__cara etiqueta__cara--reverso" id="detalleRecepcion" hidden>
-          <h3 class="etiqueta__nombre etiqueta__nombre--reverso">Recepción</h3>
-          <p class="etiqueta__lugar">Casa Cordera</p>
-          <p class="etiqueta__dir">Calle principal S/N, Bellavista<br>80301, Culiacán, Sin.</p>
-          <p class="etiqueta__hora">5:00 <span>pm</span></p>
-          <a class="boton boton--linea"
-             href="https://www.google.com/maps/search/?api=1&amp;query=Casa+Cordera+Bellavista+Culiacan"
-             target="_blank" rel="noopener">Ver ubicación</a>
-          <button class="etiqueta__cerrar" type="button" data-cierra>Volver a la etiqueta</button>
+            <div class="etiqueta__cara etiqueta__cara--reverso" id="detalleRecepcion" hidden>
+              <img class="etiqueta__arte" src="img/arte/etiqueta-recepcion-reverso.webp" alt="" width="518" height="900">
+              <img class="etiqueta__lacre" src="img/arte/sello-espiga.webp" alt="" width="168" height="213">
+              <div class="etiqueta__info">
+                <h3 class="etiqueta__nombre etiqueta__nombre--reverso">Recepción</h3>
+                <p class="etiqueta__lugar">Casa Cordera</p>
+                <p class="etiqueta__dir">Calle principal S/N, Bellavista<br>80301, Culiacán, Sin.</p>
+                <p class="etiqueta__hora">5:00 <span>pm</span></p>
+                <a class="boton boton--linea etiqueta__mapa"
+                   href="https://www.google.com/maps/search/?api=1&amp;query=Casa+Cordera+Bellavista+Culiacan"
+                   target="_blank" rel="noopener">Ver ubicación</a>
+                <button class="etiqueta__cerrar" type="button" data-cierra>Volver</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -209,7 +235,7 @@
     <h2 class="titulo-seccion titulo-seccion--claro" id="vestTitulo">Vestimenta</h2>
     <p class="vestimenta__nivel">Formal</p>
     <p class="vestimenta__nota">Te pedimos evitar los tonos tintos, verdes, blanco, beige y los colores claros: están reservados para la novia y la paleta del jardín.</p>
-    <a class="boton boton--solido" href="https://www.pinterest.com/search/pins/?q=vestido%20formal%20boda%20jardin%20invitada" target="_blank" rel="noopener">Ver ideas de outfit</a>
+    <a class="boton boton--solido" href="https://mx.pinterest.com/anglica9781/dress-code/" target="_blank" rel="noopener">Ver paleta en Pinterest</a>
   </div>
 </section>
 
@@ -241,15 +267,6 @@
       </li>
 
       <li class="linea__paso" data-revela>
-        <img class="linea__sticker" src="img/arte/s-anillos.webp" alt="" width="148" height="182" loading="lazy">
-        <div class="linea__cuerpo">
-          <p class="linea__hora"><time datetime="16:20">4:20 pm</time></p>
-          <h3 class="linea__que">Civil</h3>
-          <p class="linea__donde">Casa Cordera</p>
-        </div>
-      </li>
-
-      <li class="linea__paso" data-revela>
         <img class="linea__sticker" src="img/arte/s-botellas.webp" alt="" width="206" height="204" loading="lazy">
         <div class="linea__cuerpo">
           <p class="linea__hora"><time datetime="17:00">5:00 pm</time></p>
@@ -266,6 +283,16 @@
           <p class="linea__donde">¡A bailar!</p>
         </div>
       </li>
+
+      <!-- PENDIENTE: la hora es provisional y falta el sticker de Angie.
+           Sin sticker, el cuerpo sigue en la segunda columna (ver .linea__cuerpo). -->
+      <li class="linea__paso" data-revela>
+        <div class="linea__cuerpo">
+          <p class="linea__hora"><time datetime="01:00">1:00 am</time></p>
+          <h3 class="linea__que">Tornafiesta</h3>
+          <p class="linea__donde">Un antojito para seguir la fiesta</p>
+        </div>
+      </li>
     </ol>
   </div>
 </section>
@@ -280,14 +307,14 @@
       <div class="mesa">
         <img class="mesa__sticker" src="img/arte/s-regalos.webp" alt="" width="208" height="228" loading="lazy">
         <p class="mesa__tienda">Liverpool</p>
-        <p class="mesa__evento">Evento 02938475</p>
-        <a class="boton boton--linea-clara" href="https://mesaderegalos.liverpool.com.mx/" target="_blank" rel="noopener">Abrir Liverpool</a>
+        <p class="mesa__evento">Evento 60043251</p>
+        <a class="boton boton--linea-clara" href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/60043251" target="_blank" rel="noopener">Abrir Liverpool</a>
       </div>
       <div class="mesa">
         <img class="mesa__sticker" src="img/arte/s-tarjeta.webp" alt="" width="213" height="170" loading="lazy">
         <p class="mesa__tienda">Amazon</p>
-        <p class="mesa__evento">Evento 02938475</p>
-        <a class="boton boton--linea-clara" href="https://www.amazon.com.mx/wedding/" target="_blank" rel="noopener">Abrir Amazon</a>
+        <p class="mesa__evento">Lista de bodas</p>
+        <a class="boton boton--linea-clara" href="https://www.amazon.com.mx/wedding/guest-view/35271IUR086YC" target="_blank" rel="noopener">Abrir Amazon</a>
       </div>
     </div>
 
@@ -338,18 +365,15 @@
 <section class="confirmar campo-olivo" id="confirmar" aria-labelledby="confTitulo">
   <div class="envoltura envoltura--angosta">
 
-    <div class="monograma" data-revela aria-hidden="true">
-      <img src="img/arte/mono-a.webp" alt="" width="158" height="190">
-      <img src="img/arte/mono-z.webp" alt="" width="126" height="190">
-    </div>
+    <img class="confirmar__logo" src="img/arte/logo-az.webp" alt="" aria-hidden="true" width="586" height="800" loading="lazy">
 
     <p class="rubrica">Gracias por acompañarnos</p>
-    <h2 class="titulo-seccion" id="confTitulo">Hemos apartado para ti</h2>
+    <h2 class="titulo-seccion" id="confTitulo">Hemos reservado para ti</h2>
 
     <p class="pases" data-revela><span class="pases__num">2</span> <span class="pases__eti">pases</span></p>
 
     <p class="confirmar__nota">Adoramos a los pequeños de la familia y de los amigos; aun así, esta celebración está pensada solo para adultos.</p>
-    <p class="confirmar__limite">Te pedimos confirmar antes del <strong>1 de diciembre de 2026</strong>.</p>
+    <p class="confirmar__limite">Te pedimos confirmar antes del <strong>15 de diciembre de 2026</strong>.</p>
 
     <form class="forma" id="forma" novalidate>
 

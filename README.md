@@ -80,16 +80,15 @@ cercanos:
 
 | Diseño original | En el sitio | Papel |
 |---|---|---|
-| Le Jour Serif | Bodoni Moda | Títulos y nombres |
-| Madelyn Rough | Parisienne | Textos manuscritos |
+| Le Jour Serif | Italiana (Bodoni Moda en textos chicos y títulos espaciados) | Títulos y nombres |
+| Madelyn Rough | Sacramento | Textos manuscritos |
 | Quattrocento | Quattrocento | Cuerpo de texto — es la original |
 
 Si compran la licencia web de las dos primeras, se cambian en un solo lugar:
 las variables `--display` y `--script` al inicio de `css/estilos.css`.
 
-Las tipografías se cargan desde Google Fonts, así que hace falta internet. Si
-quieren que el sitio funcione sin conexión, descarguen los `.woff2` a
-`css/fuentes/` y cámbien el `<link>` por reglas `@font-face`.
+Las tipografías están autoalojadas en `css/fuentes/` con reglas `@font-face`:
+el sitio no carga nada de Google Fonts.
 
 ---
 
@@ -171,4 +170,4 @@ antes de mandarlo: Safari en iOS tiene sus propias mañas.
 - Las fotos salieron del PDF, o sea que ya venían comprimidas por Canva. Si tienen
   los archivos originales del fotógrafo, vale muchísimo la pena volver a generar
   `img/fotos/` desde ahí. El script que las optimiza está en el paquete de assets.
-- No hay favicon. El monograma A/Z de `img/arte/` sirve perfecto.
+- No hay favicon. El logo `img/arte/logo-az.webp` sirve de base.

@@ -144,7 +144,7 @@
   /* ─── Revelado al scroll ────────────────────────────────── */
   var porRevelar = document.querySelectorAll(
     "[data-revela], .linea__paso, .titulo-seccion, .mosaico li, " +
-    ".itinerario__lacre, .padres__vela, .regalos__carro, .monograma, .polaroides");
+    ".itinerario__lacre, .padres__vela, .regalos__carro, .confirmar__logo, .polaroides");
 
   // índice para escalonar la galería
   Array.prototype.forEach.call(document.querySelectorAll(".mosaico li"), function (li, i) {
@@ -166,10 +166,11 @@
   }
 
   /* ─── Etiquetas que voltean ─────────────────────────────── */
+  var GIRO = 900;   // ms; igual que la transición de .etiqueta__giro
+
   Array.prototype.forEach.call(document.querySelectorAll(".etiqueta"), function (tarjeta) {
     var frente = tarjeta.querySelector("[data-voltea]");
     var reverso = tarjeta.querySelector(".etiqueta__cara--reverso");
-    var cerrar = tarjeta.querySelector("[data-cierra]");
     if (!frente || !reverso) return;
 
     function voltear(abrir) {
@@ -187,17 +188,25 @@
         setTimeout(function () {
           var primero = reverso.querySelector("a, button");
           if (primero) primero.focus({ preventScroll: true });
-        }, quieto ? 0 : 450);
+        }, quieto ? 0 : GIRO / 2);
       } else {
         tarjeta.dataset.volteada = "false";
         frente.removeAttribute("tabindex");
         frente.focus({ preventScroll: true });
-        setTimeout(function () { reverso.hidden = true; }, quieto ? 0 : 850);
+        setTimeout(function () {
+          // si la volvieron a abrir durante el giro, no la escondas
+          if (tarjeta.dataset.volteada === "false") reverso.hidden = true;
+        }, quieto ? 0 : GIRO);
       }
     }
 
     frente.addEventListener("click", function () { voltear(true); });
-    if (cerrar) cerrar.addEventListener("click", function () { voltear(false); });
+    // Tocar cualquier parte del reverso (el botón "Volver" incluido)
+    // regresa la tarjeta; solo el enlace del mapa hace lo suyo.
+    reverso.addEventListener("click", function (e) {
+      if (e.target.closest("a")) return;
+      if (tarjeta.dataset.volteada === "true") voltear(false);
+    });
     tarjeta.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && tarjeta.dataset.volteada === "true") voltear(false);
     });

@@ -48,7 +48,10 @@ img/texturas/       Seamless background tiles
    `@media (prefers-reduced-motion: reduce)` block, which must stay **last** in
    `estilos.css`. If an element starts at `opacity: 0` for an entrance animation,
    that block must restore it to visible.
-4. Text on the olive background fails contrast below ~0.9 opacity on `--marfil`.
+4. The olive texture alone is too light for `--marfil` text (~2.5:1). `.campo-olivo`
+   draws `--velo-olivo` over it, which brings marfil to ~5.5:1 and `--marfil-suave` (.9) to
+   ~4.8:1. Do not lighten the veil, lower `--marfil-suave`, or add light panels behind text
+   without re-measuring (WCAG AA: 4.5:1, or 3:1 for text ≥ 24 px).
    Forms and dense text go on a cream (`--papel-tibio`) surface instead.
 5. Touch targets stay at least 44 px tall.
 6. After editing CSS, check that `{` and `}` counts still match.

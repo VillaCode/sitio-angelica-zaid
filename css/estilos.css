@@ -46,7 +46,9 @@
   --vino-hondo:   #4A0405;
   --tinta:        #33352A;
   --marfil:       #F7F3EA;
-  --marfil-suave: rgba(247, 243, 234, .72);
+  --marfil-suave: rgba(247, 243, 234, .9);
+  /* Velo sobre la textura olivo: sin él el marfil no llega a 4.5:1 (WCAG AA) */
+  --velo-olivo:   rgba(58, 61, 40, .6);
 
   /* Tipografía */
   --display: "Italiana", "Bodoni Moda", Georgia, serif;
@@ -144,8 +146,8 @@ a { color: inherit; }
 
 .campo-olivo {
   background-color: var(--olivo);
-  background-image: url("../img/texturas/olivo.webp");
-  background-size: 736px auto;
+  background-image: linear-gradient(var(--velo-olivo), var(--velo-olivo)), url("../img/texturas/olivo.webp");
+  background-size: auto, 736px auto;
   background-repeat: repeat;
   position: relative;
 }
@@ -475,7 +477,10 @@ a { color: inherit; }
   align-items: center;
 }
 
-.polaroides { position: relative; padding-bottom: 10%; }
+.polaroides {
+  position: relative; padding-bottom: 10%;
+  width: 100%; max-width: 27rem; justify-self: center;
+}
 .polaroide {
   width: 68%;
   filter: drop-shadow(0 20px 34px rgba(28, 30, 18, .42));
@@ -521,7 +526,7 @@ a { color: inherit; }
 
 @media (max-width: 720px) {
   .dedicatoria__reja { grid-template-columns: 1fr; }
-  .polaroides { max-width: 22rem; margin-inline: auto; }
+  .polaroides { max-width: 17rem; margin-inline: auto; }
   .dedicatoria__palabras { text-align: center; }
   .dedicatoria__gracias { margin-inline: auto; }
   .dedicatoria__cita { border-left: 0; padding: 0; }
@@ -744,7 +749,7 @@ a { color: inherit; }
 .vestimenta__foto img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
 .vestimenta__velo {
   position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(to bottom, rgba(45,42,30,.55), rgba(45,42,30,.32) 45%, rgba(45,42,30,.68));
+  background: linear-gradient(to bottom, rgba(45,42,30,.62), rgba(45,42,30,.55) 45%, rgba(45,42,30,.72));
 }
 .vestimenta__texto { text-shadow: 0 1px 20px rgba(35,33,24,.5); }
 .vestimenta__nivel {
@@ -756,7 +761,7 @@ a { color: inherit; }
 }
 .vestimenta__nota {
   max-width: 44ch; margin: 0 auto 2rem;
-  color: var(--marfil-suave); font-size: var(--t-sm);
+  color: var(--marfil); font-size: var(--t-sm);
 }
 
 /* ═══════════ ITINERARIO ═══════════ */
@@ -800,13 +805,13 @@ a { color: inherit; }
 /* Siempre en la segunda columna, aunque el paso no tenga sticker */
 .linea__cuerpo {
   grid-column: 2;
-  background: rgba(247, 243, 234, .09);
+  background: rgba(247, 243, 234, .05);
   border-left: 1px solid rgba(247, 243, 234, .22);
   padding: 1rem 1.4rem;
 }
 .linea__hora {
   font-size: var(--t-xs); letter-spacing: .28em; text-indent: .28em;
-  text-transform: uppercase; color: var(--marfil-suave);
+  text-transform: uppercase; color: var(--marfil);
   margin: 0 0 .25rem;
 }
 .linea__que {
@@ -815,7 +820,7 @@ a { color: inherit; }
   letter-spacing: .17em; text-transform: uppercase;
   margin: 0 0 .15rem;
 }
-.linea__donde { font-size: var(--t-sm); color: var(--marfil-suave); margin: 0; }
+.linea__donde { font-size: var(--t-sm); color: var(--marfil); margin: 0; }
 
 @media (max-width: 480px) {
   .linea__hilo { left: 2.6rem; }

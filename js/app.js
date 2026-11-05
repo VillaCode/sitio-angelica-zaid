@@ -148,7 +148,7 @@
 
   // índice para escalonar la galería
   Array.prototype.forEach.call(document.querySelectorAll(".mosaico li"), function (li, i) {
-    li.style.setProperty("--i", i);
+    li.style.setProperty("--i", i % 6);   // el retraso no crece con fotos que llegan tarde
   });
 
   if (!("IntersectionObserver" in window) || quieto) {
@@ -455,6 +455,20 @@
     });
   });
 
+  /* ─── Galería: "Ver todas las fotos" ────────────────────── */
+  var extras = Array.prototype.slice.call(document.querySelectorAll(".mosaico [data-extra]"));
+  var verTodas = document.getElementById("verTodas");
+  if (verTodas && extras.length) {
+    verTodas.textContent = "Ver todas las fotos (" + document.querySelectorAll(".mosaico li").length + ")";
+    verTodas.hidden = false;
+    verTodas.addEventListener("click", function () {
+      extras.forEach(function (li) { li.hidden = false; });
+      verTodas.hidden = true;
+      // el foco pasa a la primera foto nueva para no perderlo con el botón
+      extras[0].querySelector("button").focus({ preventScroll: true });
+    });
+  }
+
   /* ─── Visor de galería ──────────────────────────────────── */
   var piezas = Array.prototype.slice.call(document.querySelectorAll("[data-abre]"));
   var visor = document.getElementById("visor");
@@ -467,7 +481,7 @@
     if (!piezas.length) return;
     actual = (i + piezas.length) % piezas.length;
     var img = piezas[actual].querySelector("img");
-    visorImg.src = img.src;
+    visorImg.src = img.dataset.grande || img.currentSrc || img.src;
     visorImg.alt = img.alt;
     visorPie.textContent = (actual + 1) + " de " + piezas.length;
   }

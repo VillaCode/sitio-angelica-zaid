@@ -944,25 +944,27 @@ a { color: inherit; }
 .galeria { padding: var(--aire-seccion) 0; text-align: center; }
 .mosaico {
   list-style: none; margin: 0; padding: 0;
-  /* Columnas en vez de retícula: cada foto conserva su encuadre original
-     en lugar de recortarse para caber en una celda cuadrada. */
-  column-count: 3;
-  column-gap: clamp(.5rem, 1vw, .9rem);
+  /* Retícula por filas (no columnas CSS): al abrir "Ver todas" las fotos nuevas
+     se agregan abajo sin reacomodar las de arriba. */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(.5rem, 1vw, .9rem);
 }
-.mosaico li {
-  margin: 0 0 clamp(.5rem, 1vw, .9rem);
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-}
+.mosaico li { min-width: 0; }
+.mosaico__ancha { grid-column: span 2; }
+/* La última horizontal queda sola en su fila: se centra en vez de dejar hueco */
+.mosaico__ancha:last-child { grid-column: 2 / span 2; }
 .mosaico__pieza {
-  display: block; width: 100%; padding: 0; border: 0; cursor: pointer;
+  display: block; width: 100%; height: 100%; padding: 0; border: 0; cursor: pointer;
   background: rgba(51,53,42,.06); overflow: hidden;
   position: relative;
 }
 .mosaico__pieza img {
-  width: 100%; height: auto; display: block;
+  width: 100%; height: 100%; display: block;
+  aspect-ratio: 2 / 3; object-fit: cover;
   transition: transform .7s var(--curva), filter .5s var(--curva);
 }
+.mosaico__ancha .mosaico__pieza img { aspect-ratio: 4 / 3; }
 .mosaico__pieza::after {
   content: "";
   position: absolute; top: 0; right: 0; bottom: 0; left: 0; inset: 0;
@@ -972,8 +974,12 @@ a { color: inherit; }
 .mosaico__pieza:hover img { transform: scale(1.04); }
 .mosaico__pieza:hover::after { background: rgba(51, 53, 42, .12); }
 
-@media (max-width: 860px) { .mosaico { column-count: 2; } }
-@media (max-width: 460px) { .mosaico { column-count: 1; } }
+@media (max-width: 860px) {
+  .mosaico { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mosaico__ancha:last-child { grid-column: span 2; }
+}
+
+.galeria__mas { margin-top: clamp(1.5rem, 3vw, 2.4rem); }
 
 /* ═══════════ VISOR ═══════════ */
 

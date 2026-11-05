@@ -14,6 +14,8 @@ css/estilos.css     All styles. Design tokens are CSS variables at the top of :r
 css/fuentes/        Self-hosted woff2 fonts (Italiana, Sacramento, Bodoni Moda, Quattrocento)
 js/app.js           All behaviour, vanilla JS in one IIFE. Config constants at the top
 img/fotos/          Photos (WebP)
+img/fotos/galeria/  Gallery photos: <n>-600.webp (grid) and <n>-1200.webp (viewer, data-grande)
+img/new/            Original photos from the couple (gitignored: 130 MB of JPEGs)
 img/arte/           Stickers, ornate tags (front + reverso), wax seals, logo-az (WebP with alpha)
 img/compartir.jpg   1200×630 share preview (og:image), cropped from the hero photo
 img/texturas/       Seamless background tiles
@@ -95,6 +97,16 @@ guests could just edit the number.
   no passes, no form. Both start `hidden` in the HTML so neither flashes.
 - WebCrypto needs https or localhost. Opening `index.html` as a file shows only the notice.
 - The WhatsApp message includes the code and the passes, so the couple can check it against the list.
+
+## Gallery
+
+- Row-based grid (4 columns, 2 at ≤ 860 px). Portraits take 1 cell at 2:3. Landscapes
+  (`li.mosaico__ancha`) take 2 cells at 4:3, cropped with `object-fit: cover`.
+- Keep items in 2-cell blocks (two portraits, or one landscape) so rows never leave holes.
+  The last landscape alone is centred by `.mosaico__ancha:last-child`.
+- The first 12 show at first. The rest carry `data-extra hidden` and appear with "Ver todas".
+  The viewer goes through all of them and loads `data-grande` when there is one.
+- New photos: `ImageOps.exif_transpose`, then 600 px (q72) and 1200 px (q74) WebP.
 
 ## Cache
 

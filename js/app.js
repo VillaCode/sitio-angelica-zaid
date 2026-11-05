@@ -271,7 +271,9 @@
   var capasParallax = quieto ? [] : [
     { el: document.querySelector(".portada__foto"), factor: 0.28 },
     { el: document.querySelector(".vestimenta__foto"), factor: 0.16 }
-  ].filter(function (c) { return c.el; });
+  ].concat(Array.prototype.map.call(document.querySelectorAll(".cinta__foto"), function (el) {
+    return { el: el, factor: 0.07 };   // la foto sobra 20 % arriba y abajo: alcanza
+  })).filter(function (c) { return c.el; });
 
   function moverParallax() {
     for (var i = 0; i < capasParallax.length; i++) {

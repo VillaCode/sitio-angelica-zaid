@@ -760,7 +760,7 @@ a { color: inherit; }
 .vestimenta__foto img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
 .vestimenta__velo {
   position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(to bottom, rgba(45,42,30,.62), rgba(45,42,30,.55) 45%, rgba(45,42,30,.72));
+  background: linear-gradient(to bottom, rgba(45,42,30,.66), rgba(45,42,30,.66) 45%, rgba(45,42,30,.76));
 }
 .vestimenta__texto { text-shadow: 0 1px 20px rgba(35,33,24,.5); }
 .vestimenta__nivel {
@@ -774,6 +774,16 @@ a { color: inherit; }
   max-width: 44ch; margin: 0 auto 2rem;
   color: var(--marfil); font-size: var(--t-sm);
 }
+
+/* ═══════════ CINTAS DE FOTO ═══════════
+   Franjas a sangre entre secciones. La foto es más alta que la franja para
+   que el parallax (app.js) nunca deje ver el borde. */
+.cinta {
+  position: relative; margin: 0; overflow: hidden;
+  height: clamp(14rem, 38vw, 30rem);
+}
+.cinta__foto { position: absolute; top: -20%; bottom: -20%; left: 0; right: 0; }
+.cinta__foto img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, center); }
 
 /* ═══════════ ITINERARIO ═══════════ */
 
@@ -1435,7 +1445,7 @@ a { color: inherit; }
   .con-js .titulo-seccion { letter-spacing: .38em; }
   .avance { display: none; }
   .portada__foto img { animation: none; transform: scale(1.02); }
-  .portada__foto, .vestimenta__foto { transform: none !important; }
+  .portada__foto, .vestimenta__foto, .cinta__foto { transform: none !important; }
   .etiqueta__giro { transition: none; }
   .etiqueta__alza,
   .con-js .etiqueta__cara--frente { animation: none !important; }

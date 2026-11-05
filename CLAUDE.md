@@ -98,12 +98,26 @@ guests could just edit the number.
 - WebCrypto needs https or localhost. Opening `index.html` as a file shows only the notice.
 - The WhatsApp message includes the code and the passes, so the couple can check it against the list.
 
+## Photos outside the gallery
+
+All of them come from the couple's park session (`img/new`, IMG_<n>):
+hero/hero-movil/compartir.jpg = 9667, polaroids = 0972 and 9681, vestimenta = 9684,
+`.cinta` photo bands = 9643 (before El día) and 9680 (before Regalos).
+- The polaroids are the original stamp frames with the new photo warped into the frame
+  opening (perspective transform). The frames have no photo of their own anywhere else:
+  rebuild them from git history (`git show 37df303:img/fotos/polaroid-1.webp`).
+- `.cinta__foto` overflows its band by 20 % top and bottom for the parallax (factor 0.07).
+  Raise both together or the edge shows.
+- Vestimenta's veil was darkened for the brighter photo (marfil ≥ 4.8:1). Re-measure if the photo changes.
+
 ## Gallery
 
 - Row-based grid (4 columns, 2 at ≤ 860 px). Portraits take 1 cell at 2:3. Landscapes
   (`li.mosaico__ancha`) take 2 cells at 4:3, cropped with `object-fit: cover`.
 - Keep items in 2-cell blocks (two portraits, or one landscape) so rows never leave holes.
   The last landscape alone is centred by `.mosaico__ancha:last-child`.
+- The first 12 are photos that appear nowhere else on the page. The ones used above
+  (hero 9667, polaroids 0972/9681, vestimenta 9684, cintas 9643/9680) come after them.
 - The first 12 show at first. The rest carry `data-extra hidden` and appear with "Ver todas".
   The viewer goes through all of them and loads `data-grande` when there is one.
 - New photos: `ImageOps.exif_transpose`, then 600 px (q72) and 1200 px (q74) WebP.

@@ -71,9 +71,12 @@ img/texturas/       Seamless background tiles
 
 - Front and back art are the same size, so both faces share one box. Plate insets come
   from the couple's `referencia/etiquetas.json` (kept outside the repo).
-- Each face has its own wax seal, so it stays put during the flip. The seal is ~35 % of the
-  visible silhouette width (`--lacre-ancho`) and is centred on `--lacre-x`. That is 48.4 %
-  for Recepción, because its art carries a shadow on the right.
+- Each face has its own wax seal, so it stays put during the flip. The seal is ~22 % of the
+  visible silhouette width (`--lacre-ancho`; 35 % looked too big) and is centred on
+  `--lacre-x`. That is 48.4 % for Recepción, because its art carries a shadow on the right.
+- Flip affordance: a "Ver detalles" pill (`.etiqueta__pista`, aria-hidden, inside the front
+  button) under each name. Both cards also peek sideways every 6 s (`asoma`) until the
+  first flip, when `app.js` adds `.ya-giraron` to `.etiquetas`.
 - Back text uses `cqi` units (the reverso face is a size container). At 390 px it uses
   ~241 of 246 px in the plate, so there is almost no room left for more text.
 - Clicking anywhere on the back except the map link flips the card back (`app.js`).

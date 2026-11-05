@@ -585,24 +585,24 @@ a { color: inherit; }
    --proporcion  ancho / alto del webp (frente y reverso miden lo mismo)
    --placa-*     hueco liso del reverso, en % del arte
    --lacre-x     centro horizontal de la silueta visible
-   --lacre-ancho 35 % del ancho visible de la silueta */
+   --lacre-ancho ~22 % del ancho visible de la silueta */
 .etiqueta {
   --alto-etiqueta: clamp(28rem, 36vw, 34rem);
   position: relative;
-  /* aire arriba para el lacre que se encima y abajo para el nombre */
-  padding: calc(var(--alto-etiqueta) * .1) 0 3.6rem;
+  /* aire arriba para el lacre que se encima y abajo para el nombre y la pista */
+  padding: calc(var(--alto-etiqueta) * .07) 0 6.4rem;
 }
 .etiqueta--ceremonia {
   --proporcion: 485 / 900;
   --placa-arriba: 18.6%; --placa-der: 14%; --placa-abajo: 20.1%; --placa-izq: 13.8%;
   --lacre-x: 50%;
-  --lacre-ancho: 34.7%;
+  --lacre-ancho: 22%;
 }
 .etiqueta--recepcion {
   --proporcion: 518 / 900;
   --placa-arriba: 18.2%; --placa-der: 17%; --placa-abajo: 21.9%; --placa-izq: 13.3%;
   --lacre-x: 48.4%;
-  --lacre-ancho: 33.5%;
+  --lacre-ancho: 21.2%;
 }
 
 /* Se levanta un poco a mitad del giro y se vuelve a asentar.
@@ -678,6 +678,26 @@ a { color: inherit; }
   position: absolute; top: 100%; left: 0; right: 0;
   margin-top: .6rem;
 }
+
+/* "Ver detalles": deja claro que la etiqueta se voltea */
+.etiqueta__pista {
+  position: absolute; top: calc(100% + 3.9rem); left: 50%;
+  translate: -50% 0;
+  display: inline-flex; align-items: center; gap: .5em;
+  white-space: nowrap;
+  padding: .55rem 1.1rem;
+  min-height: 44px; box-sizing: border-box;
+  border: 1px solid rgba(102, 6, 7, .45);
+  border-radius: 999px;
+  font-size: var(--t-xs); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--vino);
+  background: rgba(246, 241, 231, .7);
+  transition: background-color .3s var(--curva), color .3s var(--curva);
+}
+.etiqueta__pista svg { flex: none; transition: rotate .5s var(--curva); }
+.etiqueta__cara--frente:hover .etiqueta__pista,
+.etiqueta__cara--frente:focus-visible .etiqueta__pista { background: var(--vino); color: var(--marfil); }
+.etiqueta__cara--frente:hover .etiqueta__pista svg { rotate: 180deg; }
 
 /* Reverso: la misma silueta, con el texto sobre la placa lisa */
 .etiqueta__cara--reverso {
@@ -1417,6 +1437,21 @@ a { color: inherit; }
 }
 .etiqueta__cara--frente:hover { animation-play-state: paused; }
 
+/* ─── Etiquetas: se asoman de lado cada tanto, como invitando a voltearlas.
+   Deja de hacerlo en cuanto alguien voltea una (app.js pone .ya-giraron). ─── */
+.con-js .etiquetas:not(.ya-giraron) .etiqueta:not([data-volteada="true"]) .etiqueta__giro {
+  animation: asoma 6s var(--curva-suave) 2s infinite;
+}
+.con-js .etiquetas:not(.ya-giraron) .etiqueta:nth-child(2):not([data-volteada="true"]) .etiqueta__giro {
+  animation-delay: 2.5s;
+}
+@keyframes asoma {
+  0%, 62%, 100% { transform: perspective(1600px) rotateY(0deg); }
+  74%           { transform: perspective(1600px) rotateY(-34deg); }
+  84%           { transform: perspective(1600px) rotateY(6deg); }
+  92%           { transform: perspective(1600px) rotateY(0deg); }
+}
+
 /* ─── Cuenta regresiva: el número rueda ─── */
 .cuenta__num.late { animation: rueda .55s var(--curva); }
 @keyframes rueda {
@@ -1448,6 +1483,8 @@ a { color: inherit; }
   .portada__foto, .vestimenta__foto, .cinta__foto { transform: none !important; }
   .etiqueta__giro { transition: none; }
   .etiqueta__alza,
-  .con-js .etiqueta__cara--frente { animation: none !important; }
+  .con-js .etiqueta__cara--frente,
+  .con-js .etiqueta__giro { animation: none !important; }
+  .etiqueta__pista svg { transition: none; }
   .etiqueta__lacre { transition: none; }
 }

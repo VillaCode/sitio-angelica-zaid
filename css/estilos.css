@@ -589,8 +589,8 @@ a { color: inherit; }
 .etiqueta {
   --alto-etiqueta: clamp(28rem, 36vw, 34rem);
   position: relative;
-  /* aire arriba para el lacre que se encima y abajo para el nombre y la flecha */
-  padding: calc(var(--alto-etiqueta) * .07) 0 5.4rem;
+  /* aire arriba para el lacre que se encima y abajo para el nombre */
+  padding: calc(var(--alto-etiqueta) * .07) 0 3.6rem;
 }
 .etiqueta--ceremonia {
   --proporcion: 485 / 900;
@@ -675,13 +675,14 @@ a { color: inherit; }
 .etiqueta__cara--frente .etiqueta__nombre {
   position: absolute; top: 100%; left: 0; right: 0;
   margin-top: .6rem;
+  display: flex; justify-content: center; align-items: center; gap: .3em;
 }
 
-/* Flecha de giro: pista mínima de que la etiqueta se voltea */
+/* Flecha de giro junto al nombre: pista mínima de que la etiqueta se voltea */
 .etiqueta__flecha {
-  position: absolute; top: calc(100% + 3.6rem); left: 50%;
-  translate: -50% 0;
-  width: 2.6rem; height: auto;
+  flex: none;
+  width: 1.15rem; height: auto;
+  margin-top: .15em;
   color: var(--vino); opacity: .8;
 }
 

@@ -74,8 +74,8 @@ img/texturas/       Seamless background tiles
 - Each face has its own wax seal, so it stays put during the flip. The seal is ~22 % of the
   visible silhouette width (`--lacre-ancho`; 35 % looked too big) and is centred on
   `--lacre-x`. That is 48.4 % for Recepción, because its art carries a shadow on the right.
-- Flip affordance: just a thin curved arrow (`svg.etiqueta__flecha`, aria-hidden, inside the
-  front button) under each name. The owner rejected a "Ver detalles" pill, a sideways
+- Flip affordance: just a small thin curved arrow (`svg.etiqueta__flecha`, aria-hidden, inside
+  `.etiqueta__nombre`, to the right of the name). The owner rejected a "Ver detalles" pill, a sideways
   peek animation, and the seal rotating on hover. The seals do not animate.
 - Back text uses `cqi` units (the reverso face is a size container). At 390 px it uses
   ~241 of 246 px in the plate, so there is almost no room left for more text.

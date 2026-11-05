@@ -322,37 +322,46 @@
     hilo.style.height = "100%";
   }
 
-  /* ─── Pases personalizados desde el link ────────────────── */
-  // ?pases=4&nombre=Familia%20Ochoa  →  "4 pases", el nombre bajo el título
-  // y un bloque del formulario por invitado. Sin parámetros quedan los 2 del HTML.
-  var PASES_MAX = 10;
+  /* ─── Pases por código de invitación ────────────────────── */
+  // ?i=k7m2xq9a&nombre=Familia%20Ochoa
+  // El código se convierte en hash y se busca en window.INVITACIONES
+  // (js/invitaciones.js, generado por herramientas/invitaciones.py).
+  // Código válido → "N pases", el nombre bajo el título y un bloque del formulario
+  // por invitado. Sin código o con uno que no existe → invitación genérica:
+  // sin número de pases y un solo invitado.
+  var SAL_CODIGO = "angelica-zaid-2026";   // igual que SAL en invitaciones.py
+  var VUELTAS_CODIGO = 60000;              // igual que VUELTAS en invitaciones.py
   var consulta = new URLSearchParams(location.search);
-  var totalPases = 2;
-  var pedidos = parseInt(consulta.get("pases"), 10);
-  if (/^\d+$/.test(consulta.get("pases") || "") && pedidos >= 1 && pedidos <= PASES_MAX) {
-    totalPases = pedidos;
-  }
+  var codigoInvitacion = (consulta.get("i") || "").trim().toLowerCase();
   var nombreInvitado = (consulta.get("nombre") || "").trim().slice(0, 60);
+  var totalPases = 0;   // 0 = invitación genérica
 
-  (function aplicarPases() {
-    var num = document.querySelector(".pases__num");
-    var eti = document.querySelector(".pases__eti");
-    if (num) num.textContent = totalPases;
-    if (eti) eti.textContent = totalPases === 1 ? "pase" : "pases";
+  function aHex(buf) {
+    return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+      return (b < 16 ? "0" : "") + b.toString(16);
+    }).join("");
+  }
 
-    var para = document.getElementById("paraQuien");
-    if (para && nombreInvitado) {
-      para.textContent = nombreInvitado;   // textContent: nunca HTML del link
-      para.hidden = false;
-    }
+  function codigoAHash(codigo) {
+    var sutil = window.crypto && window.crypto.subtle;
+    if (!sutil || !window.TextEncoder) return Promise.reject(new Error("sin WebCrypto"));
+    var cod = new TextEncoder();
+    return sutil.importKey("raw", cod.encode(codigo), "PBKDF2", false, ["deriveBits"])
+      .then(function (llave) {
+        return sutil.deriveBits({ name: "PBKDF2", hash: "SHA-256",
+          salt: cod.encode(SAL_CODIGO), iterations: VUELTAS_CODIGO }, llave, 256);
+      })
+      .then(aHex);
+  }
 
+  function armarFormulario(n) {
     // El bloque "Invitado 2" es el molde para los demás
     var molde = document.querySelector("[data-invitado]");
     if (!molde) return;
     var ancla = molde.nextElementSibling;
     var padre = molde.parentNode;
     padre.removeChild(molde);
-    for (var i = 2; i <= totalPases; i++) {
+    for (var i = 2; i <= n; i++) {
       var copia = molde.cloneNode(true);
       copia.querySelector("legend").textContent = "Invitado " + i;
       Array.prototype.forEach.call(copia.querySelectorAll("[id]"), function (el) {
@@ -364,25 +373,51 @@
       });
       padre.insertBefore(copia, ancla);
     }
-  })();
+  }
+
+  function aplicarPases(n) {
+    totalPases = n;
+    armarFormulario(Math.max(n, 1));
+    if (!n) return;
+
+    var num = document.querySelector(".pases__num");
+    var eti = document.querySelector(".pases__eti");
+    num.textContent = n;
+    eti.textContent = n === 1 ? "pase" : "pases";
+    document.querySelector(".pases").hidden = false;
+
+    var para = document.getElementById("paraQuien");
+    if (para && nombreInvitado) {
+      para.textContent = nombreInvitado;   // textContent: nunca HTML del link
+      para.hidden = false;
+    }
+    contarPases(num, n);
+  }
+
+  var tabla = window.INVITACIONES || {};
+  if (/^[a-z0-9]{4,20}$/.test(codigoInvitacion)) {
+    codigoAHash(codigoInvitacion).then(function (h) {
+      var n = tabla[h];
+      aplicarPases(typeof n === "number" ? n : 0);
+    }).catch(function () { aplicarPases(0); });
+  } else {
+    aplicarPases(0);
+  }
 
   /* ─── El número de pases cuenta hacia arriba ────────────── */
-  var pases = document.querySelector(".pases__num");
-  if (pases && !quieto && "IntersectionObserver" in window) {
-    var meta = parseInt(pases.textContent, 10);
-    if (!isNaN(meta) && meta > 0) {
-      pases.textContent = "0";
-      new IntersectionObserver(function (ent, obs) {
-        if (!ent[0].isIntersecting) return;
-        obs.disconnect();
-        var n = 0;
-        var paso = setInterval(function () {
-          n += 1;
-          pases.textContent = n;
-          if (n >= meta) clearInterval(paso);
-        }, Math.max(90, Math.min(400, 900 / meta)));
-      }, { threshold: .6 }).observe(pases);
-    }
+  function contarPases(nodo, meta) {
+    if (quieto || !("IntersectionObserver" in window)) return;
+    nodo.textContent = "0";
+    new IntersectionObserver(function (ent, obs) {
+      if (!ent[0].isIntersecting) return;
+      obs.disconnect();
+      var n = 0;
+      var paso = setInterval(function () {
+        n += 1;
+        nodo.textContent = n;
+        if (n >= meta) clearInterval(paso);
+      }, Math.max(90, Math.min(400, 900 / meta)));
+    }, { threshold: .6 }).observe(nodo);
   }
 
   /* ─── Copiar CLABE / tarjeta ────────────────────────────── */
@@ -550,8 +585,13 @@
 
       function porWhatsApp() {
         var t = "Confirmación de asistencia — Boda Angélica y Zaid\n";
-        if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
-        t += "Pases: " + totalPases + "\n\n";
+        if (totalPases) {
+          if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
+          t += "Código: " + codigoInvitacion + " · Pases: " + totalPases + "\n";
+        } else {
+          t += "Sin código de invitación\n";
+        }
+        t += "\n";
         t += "Invitado 1: " + datos.n1 + "\n";
         t += "Teléfono: " + (datos.t1 || "—") + "\n";
         t += "Asiste: " + (datos.a1 === "si" ? "Sí" : "No") + "\n";

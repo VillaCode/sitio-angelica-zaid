@@ -78,6 +78,23 @@ img/texturas/       Seamless background tiles
 - `GIRO` in `app.js` must match the `.etiqueta__giro` transition.
 - The front sways forever (`mece`), so Playwright needs `click(force=True)` on it.
 
+## Invitation codes
+
+Each invitation gets a link `?i=<code>&nombre=Familia%20Ochoa`. Never use `?pases=N`:
+guests could just edit the number.
+
+- The real list (names, passes, codes, links) is `referencia/invitados.csv`. It is
+  gitignored and must never be committed, because the repo is public.
+- `python3 herramientas/invitaciones.py` gives codes to new rows and keeps the existing
+  ones, so links already sent keep working. It rewrites the CSV with a `link` column and
+  writes `js/invitaciones.js`: PBKDF2-SHA256 hash of the code → passes, no names.
+- `app.js` hashes `?i=` with WebCrypto (the salt and iteration count must match the
+  script) and looks it up. A valid code shows "N pases", the `nombre` under the title and
+  N guest blocks built from the `[data-invitado]` template. With no code, or an unknown
+  one, the page shows a generic invitation: no pass count, one guest.
+- WebCrypto needs https or localhost. Opening `index.html` as a file shows the generic view.
+- The WhatsApp message includes the code and the passes, so the couple can check it against the list.
+
 ## Cache
 
 `index.html` loads `css/estilos.css?v=…` and `js/app.js?v=…`. Bump that date on both
@@ -108,8 +125,5 @@ Code tasks not done yet:
 - [x] `og:image` absolute URL to `img/compartir.jpg` (1200×630), plus og:url, twitter:card
 - [x] `<meta name="robots" content="noindex, nofollow">`
 - [ ] Favicon from `img/arte/logo-az.webp` (currently a 404 on /favicon.ico)
-- [x] Personalised passes via URL: `?pases=4&nombre=Familia%20Ochoa` sets `.pases__num`
-      ("pase" when 1), shows the name under the title (`#paraQuien`) and builds one form
-      block per guest from the `[data-invitado]` template. `pases` must be an integer 1–10,
-      otherwise it falls back to 2. The name is shown, not prefilled into `#n1`.
+- [x] Personalised passes by invitation code (see "Invitation codes")
 - [ ] Optional: send RSVPs to Formspree or Google Apps Script via the `DESTINO` constant

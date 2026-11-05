@@ -177,8 +177,6 @@
       frente.setAttribute("aria-expanded", String(abrir));
 
       if (abrir) {
-        // ya entendieron que se voltean: las etiquetas dejan de asomarse
-        tarjeta.parentNode.classList.add("ya-giraron");
         // Hay que mostrar la cara trasera y esperar un cuadro antes de
         // girar: si no, el navegador no tiene estado inicial que animar.
         reverso.hidden = false;

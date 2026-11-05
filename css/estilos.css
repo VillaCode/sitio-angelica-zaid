@@ -589,8 +589,8 @@ a { color: inherit; }
 .etiqueta {
   --alto-etiqueta: clamp(28rem, 36vw, 34rem);
   position: relative;
-  /* aire arriba para el lacre que se encima y abajo para el nombre y la pista */
-  padding: calc(var(--alto-etiqueta) * .07) 0 6.4rem;
+  /* aire arriba para el lacre que se encima y abajo para el nombre y la flecha */
+  padding: calc(var(--alto-etiqueta) * .07) 0 5.4rem;
 }
 .etiqueta--ceremonia {
   --proporcion: 485 / 900;
@@ -655,7 +655,6 @@ a { color: inherit; }
   transform: translate(-50%, -44%);
   z-index: 2;
   filter: drop-shadow(0 7px 12px rgba(60, 20, 20, .35));
-  transition: rotate .4s var(--curva), scale .4s var(--curva);
 }
 
 /* Frente */
@@ -664,7 +663,6 @@ a { color: inherit; }
   background: none; border: 0; padding: 0; cursor: pointer;
   font: inherit; color: inherit;
 }
-.etiqueta__cara--frente:hover .etiqueta__lacre { rotate: -8deg; scale: 1.06; }
 /* Ya volteada, la cara de atrás no debe atrapar clics */
 .etiqueta[data-volteada="true"] .etiqueta__cara--frente { pointer-events: none; }
 
@@ -679,25 +677,13 @@ a { color: inherit; }
   margin-top: .6rem;
 }
 
-/* "Ver detalles": deja claro que la etiqueta se voltea */
-.etiqueta__pista {
-  position: absolute; top: calc(100% + 3.9rem); left: 50%;
+/* Flecha de giro: pista mínima de que la etiqueta se voltea */
+.etiqueta__flecha {
+  position: absolute; top: calc(100% + 3.6rem); left: 50%;
   translate: -50% 0;
-  display: inline-flex; align-items: center; gap: .5em;
-  white-space: nowrap;
-  padding: .55rem 1.1rem;
-  min-height: 44px; box-sizing: border-box;
-  border: 1px solid rgba(102, 6, 7, .45);
-  border-radius: 999px;
-  font-size: var(--t-xs); letter-spacing: .2em; text-transform: uppercase;
-  color: var(--vino);
-  background: rgba(246, 241, 231, .7);
-  transition: background-color .3s var(--curva), color .3s var(--curva);
+  width: 2.6rem; height: auto;
+  color: var(--vino); opacity: .8;
 }
-.etiqueta__pista svg { flex: none; transition: rotate .5s var(--curva); }
-.etiqueta__cara--frente:hover .etiqueta__pista,
-.etiqueta__cara--frente:focus-visible .etiqueta__pista { background: var(--vino); color: var(--marfil); }
-.etiqueta__cara--frente:hover .etiqueta__pista svg { rotate: 180deg; }
 
 /* Reverso: la misma silueta, con el texto sobre la placa lisa */
 .etiqueta__cara--reverso {
@@ -1328,8 +1314,7 @@ a { color: inherit; }
 }
 
 /* ─── Los lacres se estampan ─── */
-.con-js .itinerario__lacre,
-.con-js .etiqueta__lacre { transform-origin: center 65%; }
+.con-js .itinerario__lacre { transform-origin: center 65%; }
 .con-js .itinerario__lacre.visible { animation: estampa .75s var(--curva) both; }
 @keyframes estampa {
   0%   { opacity: 0; transform: scale(1.9) rotate(-14deg); }
@@ -1437,20 +1422,6 @@ a { color: inherit; }
 }
 .etiqueta__cara--frente:hover { animation-play-state: paused; }
 
-/* ─── Etiquetas: se asoman de lado cada tanto, como invitando a voltearlas.
-   Deja de hacerlo en cuanto alguien voltea una (app.js pone .ya-giraron). ─── */
-.con-js .etiquetas:not(.ya-giraron) .etiqueta:not([data-volteada="true"]) .etiqueta__giro {
-  animation: asoma 6s var(--curva-suave) 2s infinite;
-}
-.con-js .etiquetas:not(.ya-giraron) .etiqueta:nth-child(2):not([data-volteada="true"]) .etiqueta__giro {
-  animation-delay: 2.5s;
-}
-@keyframes asoma {
-  0%, 62%, 100% { transform: perspective(1600px) rotateY(0deg); }
-  74%           { transform: perspective(1600px) rotateY(-34deg); }
-  84%           { transform: perspective(1600px) rotateY(6deg); }
-  92%           { transform: perspective(1600px) rotateY(0deg); }
-}
 
 /* ─── Cuenta regresiva: el número rueda ─── */
 .cuenta__num.late { animation: rueda .55s var(--curva); }
@@ -1483,8 +1454,5 @@ a { color: inherit; }
   .portada__foto, .vestimenta__foto, .cinta__foto { transform: none !important; }
   .etiqueta__giro { transition: none; }
   .etiqueta__alza,
-  .con-js .etiqueta__cara--frente,
-  .con-js .etiqueta__giro { animation: none !important; }
-  .etiqueta__pista svg { transition: none; }
-  .etiqueta__lacre { transition: none; }
+  .con-js .etiqueta__cara--frente { animation: none !important; }
 }

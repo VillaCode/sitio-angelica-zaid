@@ -90,9 +90,10 @@ guests could just edit the number.
   writes `js/invitaciones.js`: PBKDF2-SHA256 hash of the code → passes, no names.
 - `app.js` hashes `?i=` with WebCrypto (the salt and iteration count must match the
   script) and looks it up. A valid code shows "N pases", the `nombre` under the title and
-  N guest blocks built from the `[data-invitado]` template. With no code, or an unknown
-  one, the page shows a generic invitation: no pass count, one guest.
-- WebCrypto needs https or localhost. Opening `index.html` as a file shows the generic view.
+  N guest blocks built from the `[data-invitado]` template, all inside `#conInvitacion`.
+  With no code, or an unknown one, only `#sinInvitacion` ("Invitación personal") is shown:
+  no passes, no form. Both start `hidden` in the HTML so neither flashes.
+- WebCrypto needs https or localhost. Opening `index.html` as a file shows only the notice.
 - The WhatsApp message includes the code and the passes, so the couple can check it against the list.
 
 ## Cache

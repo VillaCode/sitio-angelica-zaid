@@ -327,8 +327,8 @@
   // El código se convierte en hash y se busca en window.INVITACIONES
   // (js/invitaciones.js, generado por herramientas/invitaciones.py).
   // Código válido → "N pases", el nombre bajo el título y un bloque del formulario
-  // por invitado. Sin código o con uno que no existe → invitación genérica:
-  // sin número de pases y un solo invitado.
+  // por invitado. Sin código o con uno que no existe → solo el aviso de
+  // "Invitación personal": sin pases ni formulario.
   var SAL_CODIGO = "angelica-zaid-2026";   // igual que SAL en invitaciones.py
   var VUELTAS_CODIGO = 60000;              // igual que VUELTAS en invitaciones.py
   var consulta = new URLSearchParams(location.search);
@@ -377,8 +377,15 @@
 
   function aplicarPases(n) {
     totalPases = n;
-    armarFormulario(Math.max(n, 1));
-    if (!n) return;
+    var aviso = document.getElementById("sinInvitacion");
+    var reserva = document.getElementById("conInvitacion");
+    if (!n) {
+      if (aviso) aviso.hidden = false;
+      document.getElementById("confirmar").setAttribute("aria-labelledby", "avisoTitulo");
+      return;
+    }
+    if (reserva) reserva.hidden = false;
+    armarFormulario(n);
 
     var num = document.querySelector(".pases__num");
     var eti = document.querySelector(".pases__eti");
@@ -585,13 +592,8 @@
 
       function porWhatsApp() {
         var t = "Confirmación de asistencia — Boda Angélica y Zaid\n";
-        if (totalPases) {
-          if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
-          t += "Código: " + codigoInvitacion + " · Pases: " + totalPases + "\n";
-        } else {
-          t += "Sin código de invitación\n";
-        }
-        t += "\n";
+        if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
+        t += "Código: " + codigoInvitacion + " · Pases: " + totalPases + "\n\n";
         t += "Invitado 1: " + datos.n1 + "\n";
         t += "Teléfono: " + (datos.t1 || "—") + "\n";
         t += "Asiste: " + (datos.a1 === "si" ? "Sí" : "No") + "\n";

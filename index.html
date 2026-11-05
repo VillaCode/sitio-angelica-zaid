@@ -367,6 +367,15 @@
 
     <img class="confirmar__logo" src="img/arte/logo-az.webp" alt="" aria-hidden="true" width="586" height="800" loading="lazy">
 
+    <!-- Sin código válido (?i=) se muestra el aviso; con código, la reservación.
+         Los dos empiezan ocultos y app.js descubre uno al revisar el código. -->
+    <div class="confirmar__aviso" id="sinInvitacion" hidden>
+      <p class="rubrica">Angélica &amp; Zaid</p>
+      <h2 class="titulo-seccion" id="avisoTitulo">Invitación personal</h2>
+      <p class="confirmar__nota">Para confirmar tu asistencia, abre el link de invitación que te enviaron los novios.</p>
+    </div>
+
+    <div class="confirmar__reserva" id="conInvitacion" hidden>
     <p class="rubrica">Gracias por acompañarnos</p>
     <h2 class="titulo-seccion" id="confTitulo">Hemos reservado para ti</h2>
     <!-- Pases y nombre salen del link: ?i=CODIGO&nombre=Familia%20Ochoa (ver app.js) -->
@@ -434,6 +443,7 @@
       <button class="boton boton--solido boton--ancho" type="submit">Enviar confirmación</button>
       <p class="forma__aviso" id="formaAviso" role="status"></p>
     </form>
+    </div>
 
   </div>
 </section>

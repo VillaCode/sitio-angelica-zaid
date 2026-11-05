@@ -23,7 +23,7 @@
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/sacramento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/quattrocento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="image" href="img/fotos/hero.webp" fetchpriority="high">
-<link rel="stylesheet" href="css/estilos.css">
+<link rel="stylesheet" href="css/estilos.css?v=2026-11-04">
 
 <script>
   /* Mejora progresiva: la clase se pone ANTES de pintar, así que si el
@@ -369,6 +369,8 @@
 
     <p class="rubrica">Gracias por acompañarnos</p>
     <h2 class="titulo-seccion" id="confTitulo">Hemos reservado para ti</h2>
+    <!-- Se llena desde el link: ?pases=4&nombre=Familia%20Ochoa (ver app.js) -->
+    <p class="confirmar__para" id="paraQuien" hidden></p>
 
     <p class="pases" data-revela><span class="pases__num">2</span> <span class="pases__eti">pases</span></p>
 
@@ -401,7 +403,8 @@
         </div>
       </fieldset>
 
-      <fieldset class="forma__grupo">
+      <!-- Este bloque sirve de molde: app.js lo copia o lo quita según los pases -->
+      <fieldset class="forma__grupo" data-invitado>
         <legend>Invitado 2</legend>
         <div class="campo">
           <label for="n2">Nombre y apellidos</label>
@@ -456,6 +459,6 @@
   <button class="visor__flecha visor__flecha--der" id="visorSig" type="button" aria-label="Foto siguiente">&#8250;</button>
 </div>
 
-<script src="js/app.js" defer></script>
+<script src="js/app.js?v=2026-11-04" defer></script>
 </body>
 </html>

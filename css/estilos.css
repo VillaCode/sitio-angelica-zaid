@@ -1026,6 +1026,14 @@ a { color: inherit; }
   translate: 10% 0;
 }
 
+/* Nombre del invitado, solo si el link trae ?nombre= */
+.confirmar__para {
+  font-family: var(--script);
+  font-size: calc(var(--t-xl) * var(--script-escala));
+  line-height: 1.2; margin: .4rem 0 0;
+  overflow-wrap: anywhere;
+}
+
 .pases { margin: 1.8rem 0 2rem; }
 .pases__num {
   font-family: var(--display);

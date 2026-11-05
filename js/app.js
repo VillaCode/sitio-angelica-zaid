@@ -322,6 +322,50 @@
     hilo.style.height = "100%";
   }
 
+  /* ─── Pases personalizados desde el link ────────────────── */
+  // ?pases=4&nombre=Familia%20Ochoa  →  "4 pases", el nombre bajo el título
+  // y un bloque del formulario por invitado. Sin parámetros quedan los 2 del HTML.
+  var PASES_MAX = 10;
+  var consulta = new URLSearchParams(location.search);
+  var totalPases = 2;
+  var pedidos = parseInt(consulta.get("pases"), 10);
+  if (/^\d+$/.test(consulta.get("pases") || "") && pedidos >= 1 && pedidos <= PASES_MAX) {
+    totalPases = pedidos;
+  }
+  var nombreInvitado = (consulta.get("nombre") || "").trim().slice(0, 60);
+
+  (function aplicarPases() {
+    var num = document.querySelector(".pases__num");
+    var eti = document.querySelector(".pases__eti");
+    if (num) num.textContent = totalPases;
+    if (eti) eti.textContent = totalPases === 1 ? "pase" : "pases";
+
+    var para = document.getElementById("paraQuien");
+    if (para && nombreInvitado) {
+      para.textContent = nombreInvitado;   // textContent: nunca HTML del link
+      para.hidden = false;
+    }
+
+    // El bloque "Invitado 2" es el molde para los demás
+    var molde = document.querySelector("[data-invitado]");
+    if (!molde) return;
+    var ancla = molde.nextElementSibling;
+    var padre = molde.parentNode;
+    padre.removeChild(molde);
+    for (var i = 2; i <= totalPases; i++) {
+      var copia = molde.cloneNode(true);
+      copia.querySelector("legend").textContent = "Invitado " + i;
+      Array.prototype.forEach.call(copia.querySelectorAll("[id]"), function (el) {
+        var nuevo = el.id.replace(/\d+$/, i);
+        var etiqueta = copia.querySelector('label[for="' + el.id + '"]');
+        if (etiqueta) etiqueta.setAttribute("for", nuevo);
+        el.id = nuevo;
+        el.name = nuevo;
+      });
+      padre.insertBefore(copia, ancla);
+    }
+  })();
+
   /* ─── El número de pases cuenta hacia arriba ────────────── */
   var pases = document.querySelector(".pases__num");
   if (pases && !quieto && "IntersectionObserver" in window) {
@@ -505,14 +549,18 @@
       }
 
       function porWhatsApp() {
-        var t = "Confirmación de asistencia — Boda Angélica y Zaid\n\n";
+        var t = "Confirmación de asistencia — Boda Angélica y Zaid\n";
+        if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
+        t += "Pases: " + totalPases + "\n\n";
         t += "Invitado 1: " + datos.n1 + "\n";
         t += "Teléfono: " + (datos.t1 || "—") + "\n";
         t += "Asiste: " + (datos.a1 === "si" ? "Sí" : "No") + "\n";
-        if (datos.n2) {
-          t += "\nInvitado 2: " + datos.n2 + "\n";
-          t += "Teléfono: " + (datos.t2 || "—") + "\n";
-          t += "Asiste: " + (datos.a2 === "si" ? "Sí" : datos.a2 === "no" ? "No" : "—") + "\n";
+        for (var i = 2; i <= totalPases; i++) {
+          if (!datos["n" + i]) continue;
+          var va = datos["a" + i];
+          t += "\nInvitado " + i + ": " + datos["n" + i] + "\n";
+          t += "Teléfono: " + (datos["t" + i] || "—") + "\n";
+          t += "Asiste: " + (va === "si" ? "Sí" : va === "no" ? "No" : "—") + "\n";
         }
         if (datos.deseos) t += "\nMensaje: " + datos.deseos;
         window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t), "_blank");

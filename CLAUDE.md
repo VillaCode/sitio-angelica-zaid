@@ -78,6 +78,12 @@ img/texturas/       Seamless background tiles
 - `GIRO` in `app.js` must match the `.etiqueta__giro` transition.
 - The front sways forever (`mece`), so Playwright needs `click(force=True)` on it.
 
+## Cache
+
+`index.html` loads `css/estilos.css?v=…` and `js/app.js?v=…`. Bump that date on both
+whenever either file changes, or browsers (and GitHub Pages' 10-minute cache) keep
+serving the old copy.
+
 ## Testing before committing
 
 There is no test suite. Before pushing, at minimum:
@@ -102,6 +108,8 @@ Code tasks not done yet:
 - [x] `og:image` absolute URL to `img/compartir.jpg` (1200×630), plus og:url, twitter:card
 - [x] `<meta name="robots" content="noindex, nofollow">`
 - [ ] Favicon from `img/arte/logo-az.webp` (currently a 404 on /favicon.ico)
-- [ ] Personalised passes via URL: `?pases=4&nombre=Familia%20Ochoa` should set
-      `.pases__num` and prefill `#n1`. Validate `pases` as an integer 1–10.
+- [x] Personalised passes via URL: `?pases=4&nombre=Familia%20Ochoa` sets `.pases__num`
+      ("pase" when 1), shows the name under the title (`#paraQuien`) and builds one form
+      block per guest from the `[data-invitado]` template. `pases` must be an integer 1–10,
+      otherwise it falls back to 2. The name is shown, not prefilled into `#n1`.
 - [ ] Optional: send RSVPs to Formspree or Google Apps Script via the `DESTINO` constant

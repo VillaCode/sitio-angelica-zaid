@@ -222,6 +222,51 @@
     document.body.appendChild(avance);
   }
 
+  /* ─── Polaroids que se inclinan con el mouse ────────────── */
+  // Solo con mouse: en teléfono no hay hover y el gesto estorbaría al scroll.
+  var grupoFotos = document.querySelector(".polaroides");
+  if (grupoFotos && !quieto && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var fotos = Array.prototype.slice.call(grupoFotos.querySelectorAll(".polaroide"));
+    var PROFUNDIDAD = [7, -11];   // px de parallax por foto: se mueven en sentidos opuestos
+    var INCLINA = 12;             // grados máximos de inclinación
+    var puntero = null, pendiente = false;
+
+    function inclinar() {
+      pendiente = false;
+      var caja = grupoFotos.getBoundingClientRect();
+      fotos.forEach(function (f, i) {
+        var s = f.style;
+        if (!puntero) {
+          ["--ix", "--iy", "--dx", "--dy"].forEach(function (v) { s.removeProperty(v); });
+          f.classList.remove("inclinada");
+          return;
+        }
+        var nx = (puntero.x - caja.left) / caja.width * 2 - 1;
+        var ny = (puntero.y - caja.top) / caja.height * 2 - 1;
+        s.setProperty("--dx", (nx * PROFUNDIDAD[i]).toFixed(1) + "px");
+        s.setProperty("--dy", (ny * PROFUNDIDAD[i]).toFixed(1) + "px");
+        var encima = puntero.foto === f;
+        f.classList.toggle("inclinada", encima);
+        if (encima) {
+          var r = f.getBoundingClientRect();
+          var lx = (puntero.x - r.left) / r.width * 2 - 1;
+          var ly = (puntero.y - r.top) / r.height * 2 - 1;
+          s.setProperty("--iy", (lx * INCLINA).toFixed(2) + "deg");
+          s.setProperty("--ix", (-ly * INCLINA).toFixed(2) + "deg");
+        } else {
+          s.removeProperty("--ix"); s.removeProperty("--iy");
+        }
+      });
+    }
+    function pedir() { if (!pendiente) { pendiente = true; requestAnimationFrame(inclinar); } }
+
+    grupoFotos.addEventListener("pointermove", function (e) {
+      puntero = { x: e.clientX, y: e.clientY, foto: e.target.closest(".polaroide") };
+      pedir();
+    });
+    grupoFotos.addEventListener("pointerleave", function () { puntero = null; pedir(); });
+  }
+
   /* ─── Parallax suave en las fotos a sangre ──────────────── */
   var capasParallax = quieto ? [] : [
     { el: document.querySelector(".portada__foto"), factor: 0.28 },

@@ -482,16 +482,27 @@ a { color: inherit; }
   width: 100%; max-width: 27rem; justify-self: center;
 }
 .polaroide {
+  /* --ix/--iy (inclinación) y --dx/--dy (parallax) los pone app.js al pasar el mouse */
+  --ix: 0deg; --iy: 0deg; --dx: 0px; --dy: 0px; --alza: 1;
+  position: relative;
   width: 68%;
   filter: drop-shadow(0 20px 34px rgba(28, 30, 18, .42));
+  transform: perspective(900px) translate(var(--dx), var(--dy))
+             rotateX(var(--ix)) rotateY(var(--iy)) rotate(var(--giro)) scale(var(--alza));
+  transition: transform .7s var(--curva), filter .7s var(--curva);
 }
-.polaroide--a { transform: rotate(-4deg); }
+.polaroide--a { --giro: -4deg; }
 .polaroide--b {
+  --giro: 5.5deg;
   width: 62%;
   margin-left: 38%;
   margin-top: -27%;
-  transform: rotate(5.5deg);
-  position: relative;
+}
+.polaroide.inclinada {
+  --alza: 1.05;
+  z-index: 2;
+  filter: drop-shadow(0 30px 40px rgba(28, 30, 18, .5));
+  transition-duration: .18s, .7s;
 }
 
 .dedicatoria__verso {
@@ -1254,11 +1265,14 @@ a { color: inherit; }
 
 /* ─── Polaroids: cada una entra por su lado y se acomoda ─── */
 .con-js .polaroide { opacity: 0; }
+/* backwards (no both): al terminar, el transform vuelve a la regla base para que
+   la inclinación con el mouse funcione */
+.con-js .polaroides.visible .polaroide { opacity: 1; }
 .con-js .polaroides.visible .polaroide--a {
-  animation: cae-izq 1.1s var(--curva) both;
+  animation: cae-izq 1.1s var(--curva) backwards;
 }
 .con-js .polaroides.visible .polaroide--b {
-  animation: cae-der 1.1s var(--curva) .18s both;
+  animation: cae-der 1.1s var(--curva) .18s backwards;
 }
 @keyframes cae-izq {
   from { opacity: 0; transform: translate(-34px, 26px) rotate(-15deg); }

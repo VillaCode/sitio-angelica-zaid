@@ -8,12 +8,14 @@ Lee referencia/invitados.csv (fuera del repo: trae nombres) con columnas
 - Las filas sin código reciben uno nuevo; los códigos existentes NO cambian,
   así los links que ya se enviaron siguen sirviendo.
 - Reescribe el CSV con los códigos y una columna "link" lista para copiar.
+  El link lleva solo el código: "nombre" es una etiqueta interna para saber a
+  quién mandarlo; los invitados escriben sus propios nombres en el formulario.
 - Escribe js/invitaciones.js solo con el hash de cada código y sus pases:
   sin nombres, y sin forma práctica de sacar los códigos del hash.
 
 El hash debe coincidir con codigoAHash() en js/app.js (PBKDF2-SHA256).
 """
-import csv, hashlib, secrets, sys, urllib.parse
+import csv, hashlib, secrets, sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -62,7 +64,7 @@ def main():
         codigo = (r.get("codigo") or "").strip() or nuevo_codigo(usados)
         usados.add(codigo)
         r.update(nombre=nombre, pases=pases, codigo=codigo,
-                 link=SITIO + "?i=" + codigo + "&nombre=" + urllib.parse.quote(nombre))
+                 link=SITIO + "?i=" + codigo)
         tabla[hash_de(codigo)] = pases
 
     with LISTA.open("w", newline="", encoding="utf-8") as f:

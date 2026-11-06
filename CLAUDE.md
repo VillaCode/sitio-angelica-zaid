@@ -85,8 +85,10 @@ img/texturas/       Seamless background tiles
 
 ## Invitation codes
 
-Each invitation gets a link `?i=<code>&nombre=Familia%20Ochoa`. Never use `?pases=N`:
-guests could just edit the number.
+Each invitation gets a link `?i=<code>`, nothing else. Never use `?pases=N`: guests could
+just edit the number. The links carry no names on purpose (owner's call, 2026-11-06): the CSV's
+`nombre` column is only an internal label, and guests type their own names in the form.
+`app.js` still shows an optional `&nombre=` under the title, but the script no longer adds it.
 
 - The real list (names, passes, codes, links) is `referencia/invitados.csv`. It is
   gitignored and must never be committed, because the repo is public.

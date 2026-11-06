@@ -4,7 +4,7 @@
 Uso:  python3 herramientas/invitaciones.py
 
 Lee referencia/invitados.csv (fuera del repo: trae nombres) con columnas
-    nombre,pases,codigo
+    nombre,pases,codigo   (más las columnas extra que quieras: se conservan)
 - Las filas sin código reciben uno nuevo; los códigos existentes NO cambian,
   así los links que ya se enviaron siguen sirviendo.
 - Reescribe el CSV con los códigos y una columna "link" lista para copiar.
@@ -43,7 +43,11 @@ def main():
     if not LISTA.exists():
         sys.exit(f"No existe {LISTA}. Crea el CSV con columnas: nombre,pases,codigo")
     with LISTA.open(newline="", encoding="utf-8") as f:
-        filas = [r for r in csv.DictReader(f) if (r.get("nombre") or "").strip()]
+        lector = csv.DictReader(f)
+        filas = [r for r in lector if (r.get("nombre") or "").strip()]
+    # Columnas extra (lado, familia, personas...) se conservan tal cual, al final.
+    columnas = ["nombre", "pases", "codigo", "link"]
+    columnas += [c for c in lector.fieldnames if c not in columnas]
 
     usados = {r["codigo"].strip() for r in filas if (r.get("codigo") or "").strip()}
     tabla = {}
@@ -62,10 +66,9 @@ def main():
         tabla[hash_de(codigo)] = pases
 
     with LISTA.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["nombre", "pases", "codigo", "link"])
+        w = csv.DictWriter(f, fieldnames=columnas, extrasaction="ignore")
         w.writeheader()
-        for r in filas:
-            w.writerow({k: r[k] for k in ("nombre", "pases", "codigo", "link")})
+        w.writerows(filas)
 
     lineas = ",\n".join(f'  "{h}": {p}' for h, p in sorted(tabla.items()))
     SALIDA.write_text(

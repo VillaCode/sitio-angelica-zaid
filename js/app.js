@@ -10,7 +10,7 @@
      DESTINO: URL de la app web de Apps Script (ver herramientas/registro.gs).
               Si la dejas vacía, las confirmaciones llegan por WhatsApp.
      WHATSAPP: número con lada de país, solo dígitos.               */
-  var DESTINO  = "";
+  var DESTINO  = "https://script.google.com/macros/s/AKfycbwRHtKOGbBsBWaCcrlAs_Wb3m9MJM8j-xw4GpS3pWM-H6lx4oJRrFWknT3waI7iwHy6/exec";
   var WHATSAPP = "526671020246";
   /* ═════════════════════════════════════════════════════════ */
 

@@ -158,8 +158,8 @@ Code tasks not done yet:
 - [x] `<meta name="robots" content="noindex, nofollow">`
 - [ ] Favicon from `img/arte/logo-az.webp` (currently a 404 on /favicon.ico)
 - [x] Personalised passes by invitation code (see "Invitation codes")
-- [ ] RSVPs to a private Google Sheet: `herramientas/registro.gs` (Apps Script) + setup guide
-      `herramientas/REGISTRO.md`. Waiting for the owner's web app URL to go into `DESTINO`.
+- [x] RSVPs to a private Google Sheet: `herramientas/registro.gs` (Apps Script) + setup guide
+      `herramientas/REGISTRO.md`. Connected: `DESTINO` holds the web app URL (2026-11-07).
       The page posts urlencoded fields (n1, t1, a1… deseos, codigo, pases) and expects `{"ok": true}`;
       anything else shows a "Enviar por WhatsApp" button (no auto-open: popups get blocked after a fetch).
       The script takes the passes from its own Invitaciones tab, never from the post.

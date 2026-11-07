@@ -11,6 +11,10 @@
      Resumen       totales y quién falta por responder
    ═══════════════════════════════════════════════════════════ */
 
+/**
+ * @OnlyCurrentDoc  El script solo puede tocar ESTA hoja, no el resto de tu Drive.
+ */
+
 var AVISAR_POR_CORREO = true;   // un correo por cada confirmación
 var PASES_MAX = 10;
 
@@ -86,19 +90,19 @@ function doPost(e) {
     var inv = buscar(libro, codigo);
 
     libro.getSheetByName("Historial").appendRow(
-      [ahora, seguro(codigo), inv ? "Sí" : "NO: código desconocido", seguro(JSON.stringify(p))]);
+      [ahora, seguro(codigo), inv ? "Sí" : "NO: código desconocido", seguro(JSON.stringify(p).slice(0, 5000))]);
     if (!inv) return json({ ok: false });
 
     // Los pases salen de la lista, nunca de lo que mande la página.
     var filas = [];
     for (var i = 1; i <= Math.min(inv.pases, PASES_MAX); i++) {
-      var nombre = String(p["n" + i] || "").trim();
+      var nombre = String(p["n" + i] || "").trim().slice(0, 120);
       if (!nombre) continue;
       var a = p["a" + i];
       filas.push([ahora, codigo, inv.nombre, inv.pases, i, seguro(nombre),
-                  seguro(String(p["t" + i] || "").trim()),
+                  seguro(String(p["t" + i] || "").trim().slice(0, 40)),
                   a === "si" ? "Sí" : a === "no" ? "No" : "—",
-                  i === 1 ? seguro(String(p.deseos || "").trim()) : ""]);
+                  i === 1 ? seguro(String(p.deseos || "").trim().slice(0, 2000)) : ""]);
     }
 
     // Si la misma invitación vuelve a confirmar, la nueva respuesta reemplaza a la vieja.

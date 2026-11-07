@@ -7,7 +7,7 @@
   "use strict";
 
   /* ═══ CONFIGURACIÓN ═══════════════════════════════════════
-     DESTINO: pega aquí la URL de Formspree o de tu Apps Script.
+     DESTINO: URL de la app web de Apps Script (ver herramientas/registro.gs).
               Si la dejas vacía, las confirmaciones llegan por WhatsApp.
      WHATSAPP: número con lada de país, solo dígitos.               */
   var DESTINO  = "";
@@ -600,13 +600,27 @@
           : "Gracias por avisarnos. Te vamos a extrañar.";
       }
 
+      // Si falla el registro, no se abre WhatsApp solo: tras la espera del
+      // envío el navegador bloquearía la ventana. Se ofrece un botón.
       function mal() {
         boton.disabled = false;
-        aviso.textContent = "No se pudo enviar. Abriendo WhatsApp…";
-        setTimeout(porWhatsApp, 600);
+        aviso.textContent = "No pudimos guardar tu confirmación. Envíala por WhatsApp:";
+        var liga = document.createElement("a");
+        liga.className = "boton boton--linea forma__whatsapp";
+        liga.href = ligaWhatsApp();
+        liga.target = "_blank";
+        liga.rel = "noopener";
+        liga.textContent = "Enviar por WhatsApp";
+        liga.addEventListener("click", bien);
+        aviso.appendChild(liga);
       }
 
       function porWhatsApp() {
+        window.open(ligaWhatsApp(), "_blank");
+        bien();
+      }
+
+      function ligaWhatsApp() {
         var t = "Confirmación de asistencia — Boda Angélica y Zaid\n";
         if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
         t += "Código: " + codigoInvitacion + " · Pases: " + totalPases + "\n\n";
@@ -621,18 +635,27 @@
           t += "Asiste: " + (va === "si" ? "Sí" : va === "no" ? "No" : "—") + "\n";
         }
         if (datos.deseos) t += "\nMensaje: " + datos.deseos;
-        window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t), "_blank");
-        bien();
+        return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t);
       }
 
       if (!DESTINO) { porWhatsApp(); return; }
 
+      // Como formulario urlencoded: Apps Script lo lee en e.parameter
+      // (multipart no). Se agregan el código y los pases de la invitación.
+      var cuerpo = new URLSearchParams();
+      Object.keys(datos).forEach(function (k) { cuerpo.append(k, datos[k]); });
+      cuerpo.append("codigo", codigoInvitacion);
+      cuerpo.append("pases", totalPases);
+
       fetch(DESTINO, {
         method: "POST",
         headers: { "Accept": "application/json" },
-        body: new FormData(forma)
+        body: cuerpo
       }).then(function (r) {
         if (!r.ok) throw new Error("respuesta " + r.status);
+        return r.json();
+      }).then(function (j) {
+        if (!j || !j.ok) throw new Error("rechazado");
         bien();
       }).catch(mal);
 

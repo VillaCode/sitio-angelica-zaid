@@ -10,6 +10,7 @@ Lee referencia/invitados.csv (fuera del repo: trae nombres) con columnas
 - Reescribe el CSV con los códigos y una columna "link" lista para copiar.
   El link lleva solo el código: "nombre" es una etiqueta interna para saber a
   quién mandarlo; los invitados escriben sus propios nombres en el formulario.
+- Escribe referencia/para-sheets.csv, la lista para importar en la hoja de Google.
 - Escribe js/invitaciones.js solo con el hash de cada código y sus pases:
   sin nombres, y sin forma práctica de sacar los códigos del hash.
 
@@ -21,6 +22,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 LISTA = RAIZ / "referencia" / "invitados.csv"
 SALIDA = RAIZ / "js" / "invitaciones.js"
+SHEETS = RAIZ / "referencia" / "para-sheets.csv"   # lista para la hoja de Google (ver REGISTRO.md)
 SITIO = "https://villacode.github.io/sitio-angelica-zaid/"
 
 SAL = b"angelica-zaid-2026"      # igual que SAL_CODIGO en app.js
@@ -71,6 +73,12 @@ def main():
         w = csv.DictWriter(f, fieldnames=columnas, extrasaction="ignore")
         w.writeheader()
         w.writerows(filas)
+
+    with SHEETS.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["codigo", "invitacion", "pases", "personas", "lado"])
+        for r in filas:
+            w.writerow([r["codigo"], r["nombre"], r["pases"], r.get("personas", ""), r.get("lado", "")])
 
     lineas = ",\n".join(f'  "{h}": {p}' for h, p in sorted(tabla.items()))
     SALIDA.write_text(

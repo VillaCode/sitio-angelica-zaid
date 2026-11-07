@@ -1180,6 +1180,11 @@ a { color: inherit; }
   color: var(--vino);
   min-height: 1.5em;
 }
+.forma__whatsapp {
+  display: block;
+  width: fit-content;
+  margin: .9rem auto 0;
+}
 .forma :focus-visible { outline-color: var(--vino); }
 
 /* El texto de arriba también sube de contraste */

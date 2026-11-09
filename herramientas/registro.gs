@@ -45,11 +45,11 @@ function preparar() {
     inv.setName("Invitaciones");
   }
   inv.setFrozenRows(1);
-  // Columna F: el link completo, listo para copiar y pegar. Una sola fórmula en F1,
-  // así las filas nuevas también tienen su link.
+  // Columna F: el link completo, listo para copiar y pegar. Se escribe como texto
+  // (no fórmula: la pestaña importada trae formato de texto y la mostraría tal cual).
   inv.getRange("F:F").clearContent();
-  inv.getRange("F1").setFormula('={"link";ARRAYFORMULA(IF(A2:A="",,"' + SITIO + '?i="&A2:A))}');
-  inv.getRange("F1").setFontWeight("bold");
+  inv.getRange("F1").setValue("link").setFontWeight("bold");
+  ponerLinks(inv);
   inv.setColumnWidth(6, 340);
 
   var resp = hoja(libro, "Respuestas", ENC_RESPUESTAS);
@@ -127,6 +127,18 @@ function onEdit(e) {
     usados[c] = true;
     h.getRange(primera + k, 1).setNumberFormat("@").setValue(c);
   });
+  ponerLinks(h);
+}
+
+// Columna F de Invitaciones: link de cada código (vacío si la fila no tiene código)
+function ponerLinks(h) {
+  var n = h.getLastRow() - 1;
+  if (n < 1) return;
+  var links = h.getRange(2, 1, n, 1).getValues().map(function (f) {
+    var c = String(f[0]).trim().toLowerCase();
+    return [c ? SITIO + "?i=" + c : ""];
+  });
+  h.getRange(2, 6, n, 1).setNumberFormat("@").setValues(links);
 }
 
 function hoja(libro, nombre, encabezados) {

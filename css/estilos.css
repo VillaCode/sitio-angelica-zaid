@@ -686,24 +686,35 @@ a { color: inherit; }
   color: var(--vino); opacity: .8;
 }
 
-/* Flechas curvas a los lados, como una órbita alrededor de la etiqueta.
-   Se dibujan solas cada 5 s. Van dentro de .etiqueta__giro con backface oculto,
-   así desaparecen al voltear. */
+/* Pista de giro: cada 5 s la etiqueta amaga con voltearse (gira ~50° y regresa)
+   mientras las flechas de los lados se dibujan. Solo antes del primer giro:
+   después de voltearla una vez, data-volteada ya existe y el amago se apaga.
+   Las flechas van dentro de .etiqueta__giro con backface oculto: al voltear desaparecen. */
+.etiqueta:not([data-volteada]) .etiqueta__alza { animation: amago 5s ease-in-out infinite; }
+.etiqueta--recepcion:not([data-volteada]) .etiqueta__alza { animation-delay: .6s; }
+@keyframes amago {
+  0%, 55%, 100% { transform: perspective(1400px) rotateY(0); }
+  70%           { transform: perspective(1400px) rotateY(-50deg); }
+  84%           { transform: perspective(1400px) rotateY(8deg); }
+}
+
 .etiqueta__orbita {
+  --orbita: clamp(1.7rem, 2.6vw, 2.1rem);
   position: absolute; top: 34%;
-  width: clamp(1.3rem, 2.2vw, 1.7rem); height: auto;
-  color: var(--vino); opacity: .75;
+  width: var(--orbita); height: auto;
+  color: var(--vino);
   pointer-events: none;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.etiqueta__orbita--izq { left: calc(clamp(1.3rem, 2.2vw, 1.7rem) * -1.6); }
-.etiqueta__orbita--der { right: calc(clamp(1.3rem, 2.2vw, 1.7rem) * -1.6); }
+.etiqueta__orbita--izq { left: calc(var(--orbita) * -1.5); }
+.etiqueta__orbita--der { right: calc(var(--orbita) * -1.5); }
 .etiqueta__orbita path {
+  stroke-width: 2.2px;
   stroke-dasharray: 100;
   animation: orbita 5s ease-in-out infinite;
 }
-.etiqueta--recepcion .etiqueta__orbita path { animation-delay: .5s; }
+.etiqueta--recepcion .etiqueta__orbita path { animation-delay: .6s; }
 @keyframes orbita {
   0%       { stroke-dashoffset: 100; opacity: 1; }
   32%, 72% { stroke-dashoffset: 0;   opacity: 1; }

@@ -74,14 +74,16 @@ img/texturas/       Seamless background tiles
 - Each face has its own wax seal, so it stays put during the flip. The seal is ~22 % of the
   visible silhouette width (`--lacre-ancho`; 35 % looked too big) and is centred on
   `--lacre-x`. That is 48.4 % for Recepción, because its art carries a shadow on the right.
-- Flip affordance (owner picked it on 2026-11-08 from three animated mockups): every 9 s the tag
-  *teases* a flip (`@keyframes amago` on `.etiqueta__alza`: rotateY to -25° and back) while small thin
-  curved arrows on both sides (sized like the arrow next to the name) draw themselves only during the tease (`svg.etiqueta__orbita`, `@keyframes orbita`; inside
-  `.etiqueta__giro` with backface hidden, so they vanish when flipped). The tease only runs while
-  `data-volteada` is absent, so it stops once the guest has flipped a tag. There is also a small thin
-  curved arrow next to the name (`svg.etiqueta__flecha`).
-  Rejected by the owner: a "Ver detalles" pill, a round ↻ button on the corner, thin arrows on their
-  own, and the seal rotating on hover. The seals do not animate.
+- Flip affordance (owner picked it on 2026-11-08 from three animated mockups): the tag *teases* a
+  flip (`@keyframes amago` on `.etiqueta__alza`: rotateY to -25° and back), 1 s after it scrolls
+  into view (`.etiqueta.visible`) and then every 9 s. Meanwhile two short horizontal curls on its
+  sides draw themselves and fade (`svg.etiqueta__orbita`, `@keyframes orbita`). They are the two ends
+  of a flat orbit, styled like the small arrow next to the name. Vertical arcs read as "up/down", so
+  the owner rejected them. The arrows sit inside `.etiqueta__giro` with backface hidden, so they vanish
+  when flipped. The tease only runs while `data-volteada` is absent, so it stops once the guest has
+  flipped a tag. There is also the small curved arrow next to the name (`svg.etiqueta__flecha`).
+  Rejected by the owner: a "Ver detalles" pill, a round ↻ button on the corner, bold or vertical side
+  arrows, and the seal rotating on hover. The seals do not animate.
 - Back text uses `cqi` units (the reverso face is a size container). At 390 px it uses
   ~241 of 246 px in the plate, so there is almost no room left for more text.
 - Clicking anywhere on the back except the map link flips the card back (`app.js`).

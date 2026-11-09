@@ -108,7 +108,7 @@ in the Google Sheets app, without publishing anything:
 - **Change passes:** edit the `pases` number in **Invitaciones**. It takes effect within seconds.
 - **Cancel an invitation:** set its `pases` to 0. The link then shows "Invitación personal".
 - **New invitation:** add a row with `invitacion` and `pases`. The code appears by itself in column A.
-  Copy the link from the **Estado** tab.
+  Its link appears in column F (`link`) and in the **Estado** tab.
 - **Who has answered:** the **Estado** tab shows ✔ Confirmó / ✘ No asiste / … Sin responder for each
   invitation, with the date, the phone and the link to resend.
 

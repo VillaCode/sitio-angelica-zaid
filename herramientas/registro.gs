@@ -10,7 +10,7 @@
    Pestañas:
      Estado        una fila por invitación: confirmó / no asiste / sin responder,
                    teléfono y su link para reenviarlo
-     Invitaciones  la lista: codigo, invitacion, pases, personas, lado.
+     Invitaciones  la lista: codigo, invitacion, pases, personas, lado, link.
                    Fila nueva con "invitacion" y sin código → el código se pone solo.
                    Pases en 0 (o borrar la fila) = la invitación deja de servir.
      Respuestas    una fila por persona; la respuesta más reciente de
@@ -45,6 +45,12 @@ function preparar() {
     inv.setName("Invitaciones");
   }
   inv.setFrozenRows(1);
+  // Columna F: el link completo, listo para copiar y pegar. Una sola fórmula en F1,
+  // así las filas nuevas también tienen su link.
+  inv.getRange("F:F").clearContent();
+  inv.getRange("F1").setFormula('={"link";ARRAYFORMULA(IF(A2:A="",,"' + SITIO + '?i="&A2:A))}');
+  inv.getRange("F1").setFontWeight("bold");
+  inv.setColumnWidth(6, 340);
 
   var resp = hoja(libro, "Respuestas", ENC_RESPUESTAS);
   hoja(libro, "Historial", ENC_HISTORIAL);

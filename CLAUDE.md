@@ -108,10 +108,10 @@ just edit the number. The links carry no names on purpose (owner's call, 2026-11
 All of them come from the couple's park session (`img/new`, IMG_<n>):
 hero/hero-movil/compartir.jpg = 9667, framed photos = 9654 and 9681 (0972 looked off), vestimenta = 9684,
 `.cinta` photo bands = 9643 (before El día) and 9680 (before Regalos).
-- The two framed photos use the silver ornate frame the bride chose (`img/new/frame.png`,
-  1435×1771, gitignored; it replaced the old stamp frames on 2026-11-07). The photo sits
-  behind the frame, cropped to the opening (x 197–1233, y 190–1573) plus 14 px of bleed, and
-  the result is scaled to 900×1111 WebP (q82). Crop offset from the top: 9654 at .25, 9681 at .05.
+- The two framed photos are cream stamp frames with a hand-cut wavy edge, drawn from scratch by
+  `herramientas/marcos.py` (900×1060 WebP, photo slightly tilted inside). They replaced the old
+  low-res stamp frames, which had a notch on the left edge. The bride rejected the silver ornate
+  frame (`img/new/frame.png`) on 2026-11-08: the stamp look is the one she wants.
 - `.cinta__foto` overflows its band by 20 % top and bottom for the parallax (factor 0.07).
   Raise both together or the edge shows.
 - Vestimenta's veil was darkened for the brighter photo (marfil ≥ 4.8:1). Re-measure if the photo changes.

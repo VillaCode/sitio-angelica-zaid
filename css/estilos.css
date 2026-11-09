@@ -678,23 +678,12 @@ a { color: inherit; }
   display: flex; justify-content: center; align-items: center; gap: .3em;
 }
 
-/* Botón redondo de giro en la esquina: la pista de que la etiqueta se voltea.
-   La dueña descartó el texto "Ver detalles", el asomo de lado y el lacre animado. */
-.etiqueta__voltear {
-  position: absolute; right: 9%; bottom: 7%;
-  z-index: 3;
-  width: 3rem; height: 3rem;
-  border-radius: 50%;
-  display: grid; place-items: center;
-  background: var(--papel-tibio);
-  color: var(--vino);
-  box-shadow: 0 0 0 1px rgba(102, 6, 7, .35), 0 6px 14px rgba(60, 40, 30, .25);
-  transition: background-color .3s var(--curva), color .3s var(--curva);
-}
-.etiqueta__voltear svg { width: 1.45rem; height: 1.45rem; }
-.etiqueta__cara--frente:hover .etiqueta__voltear,
-.etiqueta__cara--frente:focus-visible .etiqueta__voltear {
-  background: var(--vino); color: var(--papel-tibio);
+/* Flecha de giro junto al nombre: pista mínima de que la etiqueta se voltea */
+.etiqueta__flecha {
+  flex: none;
+  width: 1.3rem; height: auto;
+  margin-top: .15em;
+  color: var(--vino); opacity: .8;
 }
 
 /* Reverso: la misma silueta, con el texto sobre la placa lisa */

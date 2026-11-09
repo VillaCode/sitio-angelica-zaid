@@ -363,9 +363,17 @@
     var ancla = molde.nextElementSibling;
     var padre = molde.parentNode;
     padre.removeChild(molde);
+    if (n === 1) {
+      // Un solo pase: sin "Invitado 1" ni la nota de dejar lugares en blanco
+      padre.querySelector("legend").textContent = "Tu nombre";
+      var ayuda = document.getElementById("ayudaNombres");
+      if (ayuda) ayuda.hidden = true;
+      var et1 = padre.querySelector('label[for="n1"]');
+      if (et1) et1.textContent = "Nombre y apellidos";
+    }
     for (var i = 2; i <= n; i++) {
       var copia = molde.cloneNode(true);
-      copia.querySelector("legend").textContent = "Invitado " + i;
+      copia.querySelector("label").textContent = "Invitado " + i;
       Array.prototype.forEach.call(copia.querySelectorAll("[id]"), function (el) {
         var nuevo = el.id.replace(/\d+$/, i);
         var etiqueta = copia.querySelector('label[for="' + el.id + '"]');
@@ -562,105 +570,114 @@
   }
 
   if (forma) {
-    ["n1", "a1"].forEach(function (id) {
+    ["n1", "t1"].forEach(function (id) {
       var campo = document.getElementById(id);
       if (campo) campo.addEventListener("input", function () { marcar(campo, ""); });
     });
 
     forma.addEventListener("submit", function (e) {
       e.preventDefault();
-
-      var n1 = document.getElementById("n1");
-      var a1 = document.getElementById("a1");
-      var falla = null;
-
-      if (!n1.value.trim()) { marcar(n1, "Necesitamos tu nombre para buscarte en la lista."); falla = falla || n1; }
-      if (!a1.value) { marcar(a1, "Elige si nos acompañas."); falla = falla || a1; }
-
-      if (falla) {
-        aviso.textContent = "";
-        falla.focus();
-        return;
-      }
-
-      // ── ENVÍO ──────────────────────────────────────────────
-      // Si DESTINO trae una URL (Formspree, Apps Script, etc.) se manda ahí.
-      // Si está vacío, cae al respaldo: abre WhatsApp con el mensaje listo,
-      // así el formulario NUNCA se queda sin hacer nada.
-      var datos = {};
-      new FormData(forma).forEach(function (v, k) { datos[k] = v; });
-
-      var boton = forma.querySelector('button[type="submit"]');
-      boton.disabled = true;
-      aviso.textContent = "Enviando…";
-
-      function bien() {
-        aviso.textContent = a1.value === "si"
-          ? "¡Listo! Te esperamos el 26 de diciembre."
-          : "Gracias por avisarnos. Te vamos a extrañar.";
-      }
-
-      // Si falla el registro, no se abre WhatsApp solo: tras la espera del
-      // envío el navegador bloquearía la ventana. Se ofrece un botón.
-      function mal() {
-        boton.disabled = false;
-        aviso.textContent = "No pudimos guardar tu confirmación. Envíala por WhatsApp:";
-        var liga = document.createElement("a");
-        liga.className = "boton boton--linea forma__whatsapp";
-        liga.href = ligaWhatsApp();
-        liga.target = "_blank";
-        liga.rel = "noopener";
-        liga.textContent = "Enviar por WhatsApp";
-        liga.addEventListener("click", bien);
-        aviso.appendChild(liga);
-      }
-
-      function porWhatsApp() {
-        window.open(ligaWhatsApp(), "_blank");
-        bien();
-      }
-
-      function ligaWhatsApp() {
-        var t = "Confirmación de asistencia — Boda Angélica y Zaid\n";
-        if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
-        t += "Código: " + codigoInvitacion + " · Pases: " + totalPases + "\n\n";
-        t += "Invitado 1: " + datos.n1 + "\n";
-        t += "Teléfono: " + (datos.t1 || "—") + "\n";
-        t += "Asiste: " + (datos.a1 === "si" ? "Sí" : "No") + "\n";
-        for (var i = 2; i <= totalPases; i++) {
-          if (!datos["n" + i]) continue;
-          var va = datos["a" + i];
-          t += "\nInvitado " + i + ": " + datos["n" + i] + "\n";
-          t += "Teléfono: " + (datos["t" + i] || "—") + "\n";
-          t += "Asiste: " + (va === "si" ? "Sí" : va === "no" ? "No" : "—") + "\n";
-        }
-        if (datos.deseos) t += "\nMensaje: " + datos.deseos;
-        return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t);
-      }
-
-      if (!DESTINO) { porWhatsApp(); return; }
-
-      // Como formulario urlencoded: Apps Script lo lee en e.parameter
-      // (multipart no). Se agregan el código y los pases de la invitación.
-      var cuerpo = new URLSearchParams();
-      Object.keys(datos).forEach(function (k) { cuerpo.append(k, datos[k]); });
-      cuerpo.append("codigo", codigoInvitacion);
-      cuerpo.append("pases", totalPases);
-
-      fetch(DESTINO, {
-        method: "POST",
-        headers: { "Accept": "application/json" },
-        body: cuerpo
-      }).then(function (r) {
-        if (!r.ok) throw new Error("respuesta " + r.status);
-        return r.json();
-      }).then(function (j) {
-        if (!j || !j.ok) throw new Error("rechazado");
-        bien();
-      }).catch(mal);
-
-      return;
+      enviar("si");
     });
+    var declinar = document.getElementById("noAsistiremos");
+    if (declinar) declinar.addEventListener("click", function () { enviar("no"); });
+  }
+
+  // Quien escribe su nombre, viene: no se pregunta persona por persona.
+  // "No podremos asistir" manda la misma invitación con todos en "no".
+  function enviar(asiste) {
+    var n1 = document.getElementById("n1");
+    var t1 = document.getElementById("t1");
+    var falla = null;
+
+    marcar(n1, ""); marcar(t1, "");
+    if (!n1.value.trim()) { marcar(n1, "Necesitamos tu nombre para buscarte en la lista."); falla = n1; }
+    if (asiste === "si" && t1.value.replace(/\D/g, "").length < 10) {
+      marcar(t1, "Déjanos un teléfono de 10 dígitos por si necesitamos contactarte.");
+      falla = falla || t1;
+    }
+    if (falla) {
+      aviso.textContent = "";
+      falla.focus();
+      return;
+    }
+
+    // ── ENVÍO ──────────────────────────────────────────────
+    // Si DESTINO trae una URL (Apps Script) se manda ahí.
+    // Si está vacío, cae al respaldo: abre WhatsApp con el mensaje listo,
+    // así el formulario NUNCA se queda sin hacer nada.
+    // Se manda a1…aN por persona con nombre para que registro.gs lo lea igual que antes.
+    var datos = {};
+    new FormData(forma).forEach(function (v, k) { datos[k] = String(v).trim(); });
+    var nombres = [];
+    for (var i = 1; i <= totalPases; i++) {
+      if (datos["n" + i]) { datos["a" + i] = asiste; nombres.push(datos["n" + i]); }
+    }
+
+    var botones = forma.querySelectorAll("button");
+    Array.prototype.forEach.call(botones, function (b) { b.disabled = true; });
+    aviso.textContent = "Enviando…";
+
+    function bien() {
+      aviso.textContent = asiste === "si"
+        ? "¡Listo! Te esperamos el 26 de diciembre."
+        : "Gracias por avisarnos. Te vamos a extrañar.";
+    }
+
+    // Si falla el registro, no se abre WhatsApp solo: tras la espera del
+    // envío el navegador bloquearía la ventana. Se ofrece un botón.
+    function mal() {
+      Array.prototype.forEach.call(botones, function (b) { b.disabled = false; });
+      aviso.textContent = "No pudimos guardar tu confirmación. Envíala por WhatsApp:";
+      var liga = document.createElement("a");
+      liga.className = "boton boton--linea forma__whatsapp";
+      liga.href = ligaWhatsApp();
+      liga.target = "_blank";
+      liga.rel = "noopener";
+      liga.textContent = "Enviar por WhatsApp";
+      liga.addEventListener("click", bien);
+      aviso.appendChild(liga);
+    }
+
+    function ligaWhatsApp() {
+      var t = "Confirmación de asistencia — Boda Angélica y Zaid\n";
+      if (nombreInvitado) t += "Invitación: " + nombreInvitado + "\n";
+      t += "Código: " + codigoInvitacion + " · Pases: " + totalPases + "\n\n";
+      if (asiste === "si") {
+        t += "Asistimos " + nombres.length + " de " + totalPases + ":\n";
+        nombres.forEach(function (n) { t += "• " + n + "\n"; });
+      } else {
+        t += "No podremos asistir.\n" + nombres.join(", ") + "\n";
+      }
+      if (datos.t1) t += "Teléfono: " + datos.t1 + "\n";
+      if (datos.deseos) t += "\nMensaje: " + datos.deseos;
+      return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t);
+    }
+
+    if (!DESTINO) {
+      window.open(ligaWhatsApp(), "_blank");
+      bien();
+      return;
+    }
+
+    // Como formulario urlencoded: Apps Script lo lee en e.parameter
+    // (multipart no). Se agregan el código y los pases de la invitación.
+    var cuerpo = new URLSearchParams();
+    Object.keys(datos).forEach(function (k) { cuerpo.append(k, datos[k]); });
+    cuerpo.append("codigo", codigoInvitacion);
+    cuerpo.append("pases", totalPases);
+
+    fetch(DESTINO, {
+      method: "POST",
+      headers: { "Accept": "application/json" },
+      body: cuerpo
+    }).then(function (r) {
+      if (!r.ok) throw new Error("respuesta " + r.status);
+      return r.json();
+    }).then(function (j) {
+      if (!j || !j.ok) throw new Error("rechazado");
+      bien();
+    }).catch(mal);
   }
 
 })();

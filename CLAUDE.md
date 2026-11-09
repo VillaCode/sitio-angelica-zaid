@@ -97,7 +97,12 @@ just edit the number. The links carry no names on purpose (owner's call, 2026-11
   writes `js/invitaciones.js`: PBKDF2-SHA256 hash of the code → passes, no names.
 - `app.js` hashes `?i=` with WebCrypto (the salt and iteration count must match the
   script) and looks it up. A valid code shows "N pases", the `nombre` under the title and
-  N guest blocks built from the `[data-invitado]` template, all inside `#conInvitacion`.
+  N name fields ("Invitado 1…N") built from the `[data-invitado]` template, all inside `#conInvitacion`.
+- The form asks only for names, ONE contact phone (`t1`) and a message (owner's call, 2026-11-08).
+  There is no per-person yes/no: a written name means that person is coming, and a blank one means
+  they are not. "No podremos asistir" (`#noAsistiremos`) sends the same form with everyone as "no"
+  and needs only the first name. The page still posts `a1…aN` for each named guest, so
+  `registro.gs` did not have to change. With 1 pass the legend reads "Tu nombre".
   With no code, or an unknown one, only `#sinInvitacion` ("Invitación personal") is shown:
   no passes, no form. Both start `hidden` in the HTML so neither flashes.
 - WebCrypto needs https or localhost. Opening `index.html` as a file shows only the notice.

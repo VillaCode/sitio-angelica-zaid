@@ -23,7 +23,7 @@
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/sacramento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/quattrocento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="image" href="img/fotos/hero.webp" fetchpriority="high">
-<link rel="stylesheet" href="css/estilos.css?v=2026-11-07b">
+<link rel="stylesheet" href="css/estilos.css?v=2026-11-08a">
 
 <script>
   /* Mejora progresiva: la clase se pone ANTES de pintar, así que si el
@@ -415,58 +415,34 @@
     <form class="forma" id="forma" novalidate>
 
       <fieldset class="forma__grupo">
-        <legend>Invitado 1</legend>
+        <legend>¿Quiénes nos acompañan?</legend>
+        <p class="forma__ayuda" id="ayudaNombres">Escribe el nombre de cada persona que viene. Si alguien no puede, deja su lugar en blanco.</p>
         <div class="campo">
-          <label for="n1">Nombre y apellidos</label>
-          <input id="n1" name="n1" type="text" autocomplete="name" required>
+          <label for="n1">Invitado 1</label>
+          <input id="n1" name="n1" type="text" autocomplete="name" placeholder="Nombre y apellidos" required>
           <p class="campo__error" data-error-de="n1" hidden></p>
         </div>
-        <div class="campo__par">
-          <div class="campo">
-            <label for="t1">Teléfono</label>
-            <input id="t1" name="t1" type="tel" inputmode="tel" autocomplete="tel">
-          </div>
-          <div class="campo">
-            <label for="a1">¿Nos acompañas?</label>
-            <select id="a1" name="a1" required>
-              <option value="">Elige una opción</option>
-              <option value="si">Sí, ahí estaré</option>
-              <option value="no">No podré asistir</option>
-            </select>
-            <p class="campo__error" data-error-de="a1" hidden></p>
-          </div>
+        <!-- Este campo sirve de molde: app.js lo copia o lo quita según los pases -->
+        <div class="campo" data-invitado>
+          <label for="n2">Invitado 2</label>
+          <input id="n2" name="n2" type="text" placeholder="Nombre y apellidos">
         </div>
       </fieldset>
 
-      <!-- Este bloque sirve de molde: app.js lo copia o lo quita según los pases -->
-      <fieldset class="forma__grupo" data-invitado>
-        <legend>Invitado 2</legend>
-        <div class="campo">
-          <label for="n2">Nombre y apellidos</label>
-          <input id="n2" name="n2" type="text" autocomplete="name">
-        </div>
-        <div class="campo__par">
-          <div class="campo">
-            <label for="t2">Teléfono</label>
-            <input id="t2" name="t2" type="tel" inputmode="tel">
-          </div>
-          <div class="campo">
-            <label for="a2">¿Nos acompaña?</label>
-            <select id="a2" name="a2">
-              <option value="">Elige una opción</option>
-              <option value="si">Sí, ahí estará</option>
-              <option value="no">No podrá asistir</option>
-            </select>
-          </div>
-        </div>
-      </fieldset>
+      <!-- Un solo teléfono por invitación. Se llama t1 para que el registro (registro.gs) lo lea igual -->
+      <div class="campo">
+        <label for="t1">Teléfono de contacto</label>
+        <input id="t1" name="t1" type="tel" inputmode="tel" autocomplete="tel" placeholder="10 dígitos" required>
+        <p class="campo__error" data-error-de="t1" hidden></p>
+      </div>
 
       <div class="campo">
         <label for="deseos">Déjanos tus buenos deseos</label>
         <textarea id="deseos" name="deseos" rows="4" placeholder="Escribe aquí…"></textarea>
       </div>
 
-      <button class="boton boton--solido boton--ancho" type="submit">Enviar confirmación</button>
+      <button class="boton boton--solido boton--ancho" type="submit">Confirmar asistencia</button>
+      <button class="forma__declinar" type="button" id="noAsistiremos">No podremos asistir</button>
       <p class="forma__aviso" id="formaAviso" role="status"></p>
     </form>
     </div>
@@ -495,7 +471,7 @@
   <button class="visor__flecha visor__flecha--der" id="visorSig" type="button" aria-label="Foto siguiente">&#8250;</button>
 </div>
 
-<script src="js/invitaciones.js?v=2026-11-07b" defer></script>
-<script src="js/app.js?v=2026-11-07b" defer></script>
+<script src="js/invitaciones.js?v=2026-11-08a" defer></script>
+<script src="js/app.js?v=2026-11-08a" defer></script>
 </body>
 </html>

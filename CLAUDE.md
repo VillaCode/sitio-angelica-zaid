@@ -134,6 +134,9 @@ hero/hero-movil/compartir.jpg = 9667, framed photos = 9654 and 9681 (0972 looked
   (`li.mosaico__ancha`) take 2 cells at 4:3, cropped with `object-fit: cover`.
 - Keep items in 2-cell blocks (two portraits, or one landscape) so rows never leave holes.
   The last landscape alone is centred by `.mosaico__ancha:last-child`.
+  A last row of only two portraits is centred at 4 columns (`:nth-child(4n+1):nth-last-child(2)`).
+- Only park-session photos (22). The old mirador photos `g1`–`g9` were removed on 2026-11-09 at the
+  owner's request; do not bring them back.
 - The first 12 are photos that appear nowhere else on the page. The ones used above
   (hero 9667, polaroids 9654/9681, vestimenta 9684, cintas 9643/9680) come after them.
 - The first 12 show at first. The rest carry `data-extra hidden` and appear with "Ver todas".

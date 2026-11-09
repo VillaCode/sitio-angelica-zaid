@@ -1009,6 +1009,8 @@ a { color: inherit; }
 .mosaico__ancha { grid-column: span 2; }
 /* La última horizontal queda sola en su fila: se centra en vez de dejar hueco */
 .mosaico__ancha:last-child { grid-column: 2 / span 2; }
+/* Si la última fila queda con solo dos verticales, se centran (4 columnas) */
+.mosaico li:not([hidden]):nth-child(4n+1):nth-last-child(2):not(.mosaico__ancha) { grid-column: 2; }
 .mosaico__pieza {
   display: block; width: 100%; height: 100%; padding: 0; border: 0; cursor: pointer;
   background: rgba(51,53,42,.06); overflow: hidden;
@@ -1032,6 +1034,7 @@ a { color: inherit; }
 @media (max-width: 860px) {
   .mosaico { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mosaico__ancha:last-child { grid-column: span 2; }
+  .mosaico li:not([hidden]):nth-child(4n+1):nth-last-child(2):not(.mosaico__ancha) { grid-column: auto; }
 }
 
 .galeria__mas { margin-top: clamp(1.5rem, 3vw, 2.4rem); }

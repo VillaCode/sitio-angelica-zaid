@@ -77,7 +77,7 @@ img/texturas/       Seamless background tiles
 - Flip affordance: curved arrows on both sides of each tag (`svg.etiqueta__orbita`, inside
   `.etiqueta__giro` with backface hidden, so they vanish when flipped). They draw themselves every 5 s
   (`@keyframes orbita`, stroke-dashoffset). Also a small thin curved arrow (`svg.etiqueta__flecha`, aria-hidden, inside
-  `.etiqueta__nombre`, to the right of the name). The owner rejected a "Ver detalles" pill, a round ↻ button on the corner,, a sideways
+  `.etiqueta__nombre`, to the right of the name). The owner rejected a "Ver detalles" pill, a round ↻ button on the corner, a sideways
   peek animation, and the seal rotating on hover. The seals do not animate.
 - Back text uses `cqi` units (the reverso face is a size container). At 390 px it uses
   ~241 of 246 px in the plate, so there is almost no room left for more text.

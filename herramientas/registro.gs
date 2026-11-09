@@ -3,8 +3,16 @@
    Se pega en la hoja de cálculo: Extensiones → Apps Script.
    Pasos completos en herramientas/REGISTRO.md.
 
+   ESTA HOJA ES LA FUENTE DE VERDAD de los pases: la página le pregunta
+   cuántos pases tiene cada código (doGet ?i=). Cambiar un número aquí
+   cambia la invitación en segundos, sin publicar nada.
+
    Pestañas:
-     Invitaciones  la lista (se importa de referencia/para-sheets.csv)
+     Estado        una fila por invitación: confirmó / no asiste / sin responder,
+                   teléfono y su link para reenviarlo
+     Invitaciones  la lista: codigo, invitacion, pases, personas, lado.
+                   Fila nueva con "invitacion" y sin código → el código se pone solo.
+                   Pases en 0 (o borrar la fila) = la invitación deja de servir.
      Respuestas    una fila por persona; la respuesta más reciente de
                    cada código reemplaza a la anterior
      Historial     cada envío tal cual llegó, por si algo sale mal
@@ -17,6 +25,8 @@
 
 var AVISAR_POR_CORREO = true;   // un correo por cada confirmación
 var PASES_MAX = 10;
+var SITIO = "https://villacode.github.io/sitio-angelica-zaid/";
+var ALFABETO = "abcdefghjkmnpqrstuvwxyz23456789";   // igual que herramientas/invitaciones.py
 
 var ENC_RESPUESTAS = ["Fecha", "Código", "Invitación", "Pases", "#", "Nombre", "Teléfono", "Asiste", "Mensaje"];
 var ENC_HISTORIAL  = ["Fecha", "Código", "Válido", "Datos recibidos"];
@@ -60,7 +70,57 @@ function preparar() {
   res.getRange("A1").setFontSize(14).setFontWeight("bold");
   res.getRange("A9:C9").setFontWeight("bold");
   res.setColumnWidth(1, 280);
-  libro.setActiveSheet(res);
+
+  // Estado: todo con fórmulas, se actualiza solo con cada respuesta
+  var est = libro.getSheetByName("Estado") || libro.insertSheet("Estado", 0);
+  est.clear();
+  est.clearConditionalFormatRules();
+  est.getRange("A1:I1").setValues([["Invitación", "Pases", "Asisten", "No asisten", "Estado",
+                                     "Respondió", "Teléfono", "Lado", "Link"]]).setFontWeight("bold");
+  var hay = 'Invitaciones!A2:A=""';
+  est.getRange("A2:I2").setFormulas([[
+    '=ARRAYFORMULA(IF(' + hay + ',,Invitaciones!B2:B))',
+    '=ARRAYFORMULA(IF(' + hay + ',,Invitaciones!C2:C))',
+    '=ARRAYFORMULA(IF(' + hay + ',,COUNTIFS(Respuestas!B2:B,Invitaciones!A2:A,Respuestas!H2:H,"Sí")))',
+    '=ARRAYFORMULA(IF(' + hay + ',,COUNTIFS(Respuestas!B2:B,Invitaciones!A2:A,Respuestas!H2:H,"No")))',
+    '=ARRAYFORMULA(IF(' + hay + ',,IF(C2:C>0,"✔ Confirmó",IF(D2:D>0,"✘ No asiste","… Sin responder"))))',
+    '=ARRAYFORMULA(IF(' + hay + ',,IFERROR(VLOOKUP(Invitaciones!A2:A,{Respuestas!B2:B,Respuestas!A2:A},2,FALSE),"")))',
+    '=ARRAYFORMULA(IF(' + hay + ',,IFERROR(VLOOKUP(Invitaciones!A2:A,{Respuestas!B2:B,Respuestas!G2:G},2,FALSE),"")))',
+    '=ARRAYFORMULA(IF(' + hay + ',,Invitaciones!E2:E))',
+    '=ARRAYFORMULA(IF(' + hay + ',,"' + SITIO + '?i="&Invitaciones!A2:A))'
+  ]]);
+  est.getRange("F:F").setNumberFormat("dd/mm/yyyy hh:mm");
+  est.setFrozenRows(1);
+  est.setColumnWidth(1, 260); est.setColumnWidth(5, 130); est.setColumnWidth(9, 330);
+  var col = est.getRange("E2:E");
+  est.setConditionalFormatRules([
+    SpreadsheetApp.newConditionalFormatRule().whenTextStartsWith("✔").setBackground("#DCE8D2").setRanges([col]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenTextStartsWith("✘").setBackground("#F2D6D3").setRanges([col]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenTextStartsWith("…").setBackground("#F6F1E7").setRanges([col]).build()
+  ]);
+  libro.setActiveSheet(est);
+}
+
+/* ── Fila nueva en Invitaciones (también desde el celular): le pone código ── */
+function onEdit(e) {
+  var h = e && e.range && e.range.getSheet();
+  if (!h || h.getName() !== "Invitaciones") return;
+  var primera = Math.max(e.range.getRow(), 2), ultima = e.range.getLastRow();
+  if (ultima < primera) return;
+  var usados = {};
+  h.getRange(2, 1, Math.max(h.getLastRow() - 1, 1), 1).getValues()
+    .forEach(function (f) { usados[String(f[0]).trim().toLowerCase()] = true; });
+  var filas = h.getRange(primera, 1, ultima - primera + 1, 2).getValues();
+  filas.forEach(function (f, k) {
+    if (String(f[0]).trim() || !String(f[1]).trim()) return;   // ya tiene código, o fila vacía
+    var c;
+    do {
+      c = "";
+      for (var i = 0; i < 8; i++) c += ALFABETO.charAt(Math.floor(Math.random() * ALFABETO.length));
+    } while (usados[c]);
+    usados[c] = true;
+    h.getRange(primera + k, 1).setNumberFormat("@").setValue(c);
+  });
 }
 
 function hoja(libro, nombre, encabezados) {
@@ -73,9 +133,19 @@ function hoja(libro, nombre, encabezados) {
   return h;
 }
 
-/* ── Prueba rápida: abrir la URL de la app web en el navegador ── */
-function doGet() {
-  return ContentService.createTextOutput("Registro activo ✔");
+/* ── La página pregunta los pases de un código: ?i=CODIGO ──
+   Responde solo un número para ese código exacto: ni nombres ni la lista.
+   Sin ?i= sirve de prueba rápida en el navegador. */
+function doGet(e) {
+  var codigo = String((e && e.parameter && e.parameter.i) || "").trim().toLowerCase();
+  if (!codigo) return ContentService.createTextOutput("Registro activo ✔");
+  if (!/^[a-z0-9]{4,20}$/.test(codigo)) return json({ ok: true, existe: false, pases: 0 });
+  try {
+    var inv = buscar(SpreadsheetApp.getActiveSpreadsheet(), codigo);
+    return json({ ok: true, existe: !!inv, pases: inv ? Math.min(inv.pases, PASES_MAX) : 0 });
+  } catch (err) {
+    return json({ ok: false });   // la página usa su lista de respaldo
+  }
 }
 
 /* ── Cada confirmación que manda la página ── */
@@ -128,7 +198,8 @@ function buscar(libro, codigo) {
   var datos = h.getRange(2, 1, Math.max(h.getLastRow() - 1, 1), 3).getValues();
   for (var i = 0; i < datos.length; i++) {
     if (String(datos[i][0]).trim().toLowerCase() === codigo) {
-      return { nombre: datos[i][1], pases: Number(datos[i][2]) || 1 };
+      var pases = Math.floor(Number(datos[i][2]) || 0);
+      return pases >= 1 ? { nombre: datos[i][1], pases: pases } : null;   // 0 = cancelada
     }
   }
   return null;

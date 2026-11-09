@@ -99,3 +99,18 @@ In the sheet, click **Share** (Compartir), add her email as **Editor**, and leav
   3. Publish.
 
   Never import again with "Replace spreadsheet": that would wipe the answers.
+
+## The Sheet is the source of truth (since 2026-11-09)
+
+The page asks the Sheet how many passes each code has, so you can manage invitations from your phone
+in the Google Sheets app, without publishing anything:
+
+- **Change passes:** edit the `pases` number in **Invitaciones**. It takes effect within seconds.
+- **Cancel an invitation:** set its `pases` to 0. The link then shows "Invitación personal".
+- **New invitation:** add a row with `invitacion` and `pases`. The code appears by itself in column A.
+  Copy the link from the **Estado** tab.
+- **Who has answered:** the **Estado** tab shows ✔ Confirmó / ✘ No asiste / … Sin responder for each
+  invitation, with the date, the phone and the link to resend.
+
+After pasting a new version of the script: run **preparar** once (it rebuilds Estado and Resumen and does
+not touch your answers), then go to Deploy → Manage deployments → ✏️ → **New version** → Deploy.

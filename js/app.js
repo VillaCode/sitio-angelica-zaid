@@ -325,9 +325,9 @@
   }
 
   /* ─── Pases por código de invitación ────────────────────── */
-  // ?i=k7m2xq9a&nombre=Familia%20Ochoa
-  // El código se convierte en hash y se busca en window.INVITACIONES
-  // (js/invitaciones.js, generado por herramientas/invitaciones.py).
+  // ?i=k7m2xq9a
+  // Los pases los dice la hoja de Google (ver abajo); window.INVITACIONES
+  // (js/invitaciones.js, hash del código → pases) es el respaldo instantáneo.
   // Código válido → "N pases", el nombre bajo el título y un bloque del formulario
   // por invitado. Sin código o con uno que no existe → solo el aviso de
   // "Invitación personal": sin pases ni formulario.
@@ -356,23 +356,37 @@
       .then(aHex);
   }
 
+  // El molde ("Invitado 2") se saca del HTML una sola vez; las copias llevan
+  // data-copia para poder rehacer el formulario si la hoja trae otro número.
+  var moldeInvitado = document.querySelector("[data-invitado]");
+  var grupoNombres = moldeInvitado && moldeInvitado.parentNode;
+  var textosOriginales = grupoNombres && {
+    legend: grupoNombres.querySelector("legend").textContent,
+    et1: grupoNombres.querySelector('label[for="n1"]').textContent
+  };
+  if (moldeInvitado) grupoNombres.removeChild(moldeInvitado);
+
   function armarFormulario(n) {
-    // El bloque "Invitado 2" es el molde para los demás
-    var molde = document.querySelector("[data-invitado]");
-    if (!molde) return;
-    var ancla = molde.nextElementSibling;
-    var padre = molde.parentNode;
-    padre.removeChild(molde);
-    if (n === 1) {
-      // Un solo pase: sin "Invitado 1" ni la nota de dejar lugares en blanco
-      padre.querySelector("legend").textContent = "Tu nombre";
-      var ayuda = document.getElementById("ayudaNombres");
-      if (ayuda) ayuda.hidden = true;
-      var et1 = padre.querySelector('label[for="n1"]');
-      if (et1) et1.textContent = "Nombre y apellidos";
-    }
+    if (!moldeInvitado) return;
+    var padre = grupoNombres;
+    // lo ya escrito se conserva si el formulario se rehace
+    var escrito = {};
+    Array.prototype.forEach.call(padre.querySelectorAll("[data-copia]"), function (c) {
+      var campo = c.querySelector("input");
+      if (campo) escrito[campo.id] = campo.value;
+      padre.removeChild(c);
+    });
+    var solo = n === 1;   // un pase: "Tu nombre", sin "Invitado 1" ni la nota
+    padre.querySelector("legend").textContent = solo ? "Tu nombre" : textosOriginales.legend;
+    var ayuda = document.getElementById("ayudaNombres");
+    if (ayuda) ayuda.hidden = solo;
+    var et1 = padre.querySelector('label[for="n1"]');
+    if (et1) et1.textContent = solo ? "Nombre y apellidos" : textosOriginales.et1;
+
     for (var i = 2; i <= n; i++) {
-      var copia = molde.cloneNode(true);
+      var copia = moldeInvitado.cloneNode(true);
+      copia.setAttribute("data-copia", "");
+      copia.removeAttribute("data-invitado");
       copia.querySelector("label").textContent = "Invitado " + i;
       Array.prototype.forEach.call(copia.querySelectorAll("[id]"), function (el) {
         var nuevo = el.id.replace(/\d+$/, i);
@@ -380,21 +394,29 @@
         if (etiqueta) etiqueta.setAttribute("for", nuevo);
         el.id = nuevo;
         el.name = nuevo;
+        if (escrito[nuevo]) el.value = escrito[nuevo];
       });
-      padre.insertBefore(copia, ancla);
+      padre.appendChild(copia);
     }
   }
 
+  var pasesAnimados = false;
+
   function aplicarPases(n) {
+    if (n === totalPases && n) return;
     totalPases = n;
     var aviso = document.getElementById("sinInvitacion");
     var reserva = document.getElementById("conInvitacion");
+    var seccion = document.getElementById("confirmar");
     if (!n) {
+      if (reserva) reserva.hidden = true;
       if (aviso) aviso.hidden = false;
-      document.getElementById("confirmar").setAttribute("aria-labelledby", "avisoTitulo");
+      seccion.setAttribute("aria-labelledby", "avisoTitulo");
       return;
     }
+    if (aviso) aviso.hidden = true;
     if (reserva) reserva.hidden = false;
+    seccion.setAttribute("aria-labelledby", "confTitulo");
     armarFormulario(n);
 
     var num = document.querySelector(".pases__num");
@@ -408,26 +430,55 @@
       para.textContent = nombreInvitado;   // textContent: nunca HTML del link
       para.hidden = false;
     }
-    contarPases(num, n);
+    if (!pasesAnimados) { pasesAnimados = true; contarPases(num); }
   }
 
+  // ¿Cuántos pases? La hoja de Google (DESTINO, doGet ?i=) es la fuente de verdad.
+  // 1. La lista local (js/invitaciones.js) responde al instante, si conoce el código.
+  // 2. La hoja contesta en ~1 s y manda: otro número rehace el formulario; "no existe"
+  //    (código cancelado o borrado) lo quita.
+  // 3. Si la hoja no contesta (sin red, error, 8 s), se queda la lista local.
   var tabla = window.INVITACIONES || {};
   if (/^[a-z0-9]{4,20}$/.test(codigoInvitacion)) {
+    var local = null, remoto = null;   // null = aún no sabemos
+    var resolver = function () {
+      if (remoto && remoto.ok) { aplicarPases(remoto.existe ? remoto.pases : 0); return; }
+      if (remoto && local !== null) { aplicarPases(local); return; }   // hoja falló: respaldo
+      if (local) aplicarPases(local);                                 // mientras llega la hoja
+    };
     codigoAHash(codigoInvitacion).then(function (h) {
       var n = tabla[h];
-      aplicarPases(typeof n === "number" ? n : 0);
-    }).catch(function () { aplicarPases(0); });
+      local = typeof n === "number" ? n : 0;
+    }).catch(function () { local = 0; }).then(resolver);
+
+    if (DESTINO && window.fetch) {
+      var corte = window.AbortController ? new AbortController() : null;
+      var reloj = setTimeout(function () { if (corte) corte.abort(); }, 8000);
+      fetch(DESTINO + "?i=" + encodeURIComponent(codigoInvitacion),
+            corte ? { signal: corte.signal } : {})
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var p = Math.floor(Number(j && j.pases) || 0);
+          remoto = (j && j.ok === true && (!j.existe || (p >= 1 && p <= 10)))
+            ? { ok: true, existe: !!j.existe, pases: p } : { ok: false };
+        })
+        .catch(function () { remoto = { ok: false }; })
+        .then(function () { clearTimeout(reloj); resolver(); });
+    } else {
+      remoto = { ok: false };
+    }
   } else {
     aplicarPases(0);
   }
 
   /* ─── El número de pases cuenta hacia arriba ────────────── */
-  function contarPases(nodo, meta) {
+  function contarPases(nodo) {
     if (quieto || !("IntersectionObserver" in window)) return;
     nodo.textContent = "0";
     new IntersectionObserver(function (ent, obs) {
       if (!ent[0].isIntersecting) return;
       obs.disconnect();
+      var meta = totalPases;   // el número final, aunque la hoja lo haya corregido
       var n = 0;
       var paso = setInterval(function () {
         n += 1;

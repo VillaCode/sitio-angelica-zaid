@@ -92,6 +92,16 @@ img/texturas/       Seamless background tiles
 
 ## Invitation codes
 
+**The Google Sheet is the source of truth for passes** (owner's call, 2026-11-09). On load, `app.js`
+shows the invitation at once from `js/invitaciones.js` (local fallback), then asks the Sheet
+(`DESTINO?i=<code>`, `doGet` in `registro.gs`, 8 s timeout). The Sheet's answer wins:
+- a different number rebuilds the form and keeps what was typed;
+- `existe:false` (row deleted or passes 0) shows the "Invitación personal" notice;
+- any error falls back to the local list.
+
+A new row typed in the Sheet's Invitaciones tab gets a code automatically (`onEdit`). The local list and
+`referencia/invitados.csv` only matter as a fallback, and for the PDF of links.
+
 Each invitation gets a link `?i=<code>`, nothing else. Never use `?pases=N`: guests could
 just edit the number. The links carry no names on purpose (owner's call, 2026-11-06): the CSV's
 `nombre` column is only an internal label, and guests type their own names in the form.

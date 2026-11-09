@@ -686,40 +686,41 @@ a { color: inherit; }
   color: var(--vino); opacity: .8;
 }
 
-/* Pista de giro: cada 5 s la etiqueta amaga con voltearse (gira ~50° y regresa)
+/* Pista de giro: cada 9 s la etiqueta amaga con voltearse (gira ~25° y regresa)
    mientras las flechas de los lados se dibujan. Solo antes del primer giro:
    después de voltearla una vez, data-volteada ya existe y el amago se apaga.
    Las flechas van dentro de .etiqueta__giro con backface oculto: al voltear desaparecen. */
-.etiqueta:not([data-volteada]) .etiqueta__alza { animation: amago 5s ease-in-out infinite; }
+.etiqueta:not([data-volteada]) .etiqueta__alza { animation: amago 9s ease-in-out infinite; }
 .etiqueta--recepcion:not([data-volteada]) .etiqueta__alza { animation-delay: .6s; }
 @keyframes amago {
-  0%, 55%, 100% { transform: perspective(1400px) rotateY(0); }
-  70%           { transform: perspective(1400px) rotateY(-50deg); }
-  84%           { transform: perspective(1400px) rotateY(8deg); }
+  0%, 74%, 100% { transform: perspective(1400px) rotateY(0); }
+  84%           { transform: perspective(1400px) rotateY(-25deg); }
+  93%           { transform: perspective(1400px) rotateY(3deg); }
 }
 
 .etiqueta__orbita {
-  --orbita: clamp(1.7rem, 2.6vw, 2.1rem);
+  --orbita: clamp(.95rem, 1.3vw, 1.15rem);   /* del tamaño de la flechita del nombre */
   position: absolute; top: 34%;
   width: var(--orbita); height: auto;
-  color: var(--vino);
+  color: var(--vino); opacity: .8;
   pointer-events: none;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.etiqueta__orbita--izq { left: calc(var(--orbita) * -1.5); }
-.etiqueta__orbita--der { right: calc(var(--orbita) * -1.5); }
+.etiqueta__orbita--izq { left: calc(var(--orbita) * -1.8); }
+.etiqueta__orbita--der { right: calc(var(--orbita) * -1.8); }
 .etiqueta__orbita path {
-  stroke-width: 2.2px;
+  stroke-width: 1.6px;
   stroke-dasharray: 100;
-  animation: orbita 5s ease-in-out infinite;
+  animation: orbita 9s ease-in-out infinite;
 }
 .etiqueta--recepcion .etiqueta__orbita path { animation-delay: .6s; }
+/* Solo aparecen durante el amago; el resto del tiempo no están */
 @keyframes orbita {
-  0%       { stroke-dashoffset: 100; opacity: 1; }
-  32%, 72% { stroke-dashoffset: 0;   opacity: 1; }
-  88%      { stroke-dashoffset: 0;   opacity: 0; }
-  100%     { stroke-dashoffset: 100; opacity: 0; }
+  0%, 70%  { stroke-dashoffset: 100; opacity: 0; }
+  71%      { stroke-dashoffset: 100; opacity: 1; }
+  84%, 92% { stroke-dashoffset: 0;   opacity: 1; }
+  99%, 100% { stroke-dashoffset: 0;  opacity: 0; }
 }
 
 /* Reverso: la misma silueta, con el texto sobre la placa lisa */

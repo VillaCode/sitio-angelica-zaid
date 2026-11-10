@@ -9,7 +9,8 @@
 
    Pestañas:
      Estado        una fila por invitación: confirmó / no asiste / sin responder,
-                   teléfono y su link para reenviarlo
+                   teléfono y su link para reenviarlo. Valores escritos por el script
+                   (no fórmulas); menú Boda → Actualizar si algo no cuadra
      Invitaciones  la lista: codigo, invitacion, pases, personas, lado, link.
                    Fila nueva con "invitacion" y sin código → el código se pone solo.
                    Pases en 0 (o borrar la fila) = la invitación deja de servir.
@@ -58,61 +59,114 @@ function preparar() {
   resp.getRange("B:B").setNumberFormat("@");   // los códigos siempre como texto
   inv.getRange("A:A").setNumberFormat("@");
 
-  var res = libro.getSheetByName("Resumen") || libro.insertSheet("Resumen", 0);
-  res.clear();
-  res.getRange("A1:B7").setValues([
-    ["Resumen", ""],
-    ["Invitaciones enviadas", "=COUNTA(Invitaciones!A2:A)"],
-    ["Pases en total", "=SUM(Invitaciones!C2:C)"],
-    ["Invitaciones que ya respondieron", "=COUNTUNIQUE(Respuestas!B2:B)"],
-    ["Invitaciones sin responder", "=B2-B4"],
-    ["Personas que SÍ asisten", "=COUNTIF(Respuestas!H2:H,\"Sí\")"],
-    ["Personas que NO asisten", "=COUNTIF(Respuestas!H2:H,\"No\")"]
-  ]);
-  res.getRange("A9:C9").setValues([["Sin responder", "Pases", "Lado"]]);
-  res.getRange("A10").setFormula(
-    '=IFERROR(FILTER({Invitaciones!B2:B,Invitaciones!C2:C,Invitaciones!E2:E},' +
-    'Invitaciones!A2:A<>"",ISNA(MATCH(Invitaciones!A2:A,Respuestas!B2:B,0))),"Todas respondieron")');
-  res.getRange("A1").setFontSize(14).setFontWeight("bold");
-  res.getRange("A9:C9").setFontWeight("bold");
-  res.setColumnWidth(1, 280);
+  // Estado y Resumen se escriben como valores, no fórmulas: con la hoja en español
+  // las fórmulas del script daban "Error de análisis de fórmula".
+  actualizar(libro);
+  libro.setActiveSheet(libro.getSheetByName("Estado"));
+}
 
-  // Estado: todo con fórmulas, se actualiza solo con cada respuesta
+/* ── Menú "Boda" al abrir la hoja; también refresca Estado y Resumen ── */
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu("Boda")
+    .addItem("Actualizar Estado y Resumen", "actualizarAhora")
+    .addToUi();
+  try { actualizar(SpreadsheetApp.getActiveSpreadsheet()); } catch (err) {}
+}
+
+function actualizarAhora() {
+  actualizar(SpreadsheetApp.getActiveSpreadsheet());
+}
+
+/* ── Reescribe Estado y Resumen con valores ──
+   Se llama al abrir la hoja, con cada confirmación y al editar Invitaciones o Respuestas. */
+function actualizar(libro) {
+  var inv = libro.getSheetByName("Invitaciones");
+  var resp = libro.getSheetByName("Respuestas");
+  if (!inv || !resp) return;
+
+  var lista = inv.getLastRow() > 1
+    ? inv.getRange(2, 1, inv.getLastRow() - 1, 5).getValues()
+        .filter(function (f) { return String(f[0]).trim(); })
+    : [];
+
+  // Respuestas por código: cuántos sí, cuántos no, fecha y teléfono
+  var por = {};
+  if (resp.getLastRow() > 1) {
+    resp.getRange(2, 1, resp.getLastRow() - 1, 8).getValues().forEach(function (f) {
+      var c = String(f[1]).trim().toLowerCase();
+      if (!c) return;
+      var r = por[c] || (por[c] = { si: 0, no: 0, fecha: "", tel: "" });
+      if (f[7] === "Sí") r.si++;
+      if (f[7] === "No") r.no++;
+      if (f[0] && (!r.fecha || f[0] > r.fecha)) r.fecha = f[0];
+      if (!r.tel && String(f[6]).trim()) r.tel = String(f[6]).trim();
+    });
+  }
+
+  var filas = [], fondos = [], sinResponder = [];
+  var tot = { pases: 0, respondieron: 0, si: 0, no: 0 };
+  lista.forEach(function (f) {
+    var c = String(f[0]).trim().toLowerCase();
+    var pases = Math.floor(Number(f[2]) || 0);
+    var r = por[c];
+    var estado = !r ? "… Sin responder" : r.si > 0 ? "✔ Confirmó" : "✘ No asiste";
+    filas.push([String(f[1]), pases, r ? r.si : 0, r ? r.no : 0, estado,
+                r ? r.fecha : "", r ? r.tel : "", String(f[4]), SITIO + "?i=" + c]);
+    var color = !r ? "#F6F1E7" : r.si > 0 ? "#DCE8D2" : "#F2D6D3";
+    fondos.push([null, null, null, null, color, null, null, null, null]);
+    tot.pases += pases;
+    if (r) { tot.respondieron++; tot.si += r.si; tot.no += r.no; }
+    else sinResponder.push([String(f[1]), pases, String(f[4])]);
+  });
+
   var est = libro.getSheetByName("Estado") || libro.insertSheet("Estado", 0);
   est.clear();
   est.clearConditionalFormatRules();
   est.getRange("A1:I1").setValues([["Invitación", "Pases", "Asisten", "No asisten", "Estado",
                                      "Respondió", "Teléfono", "Lado", "Link"]]).setFontWeight("bold");
-  var hay = 'Invitaciones!A2:A=""';
-  est.getRange("A2:I2").setFormulas([[
-    '=ARRAYFORMULA(IF(' + hay + ',,Invitaciones!B2:B))',
-    '=ARRAYFORMULA(IF(' + hay + ',,Invitaciones!C2:C))',
-    '=ARRAYFORMULA(IF(' + hay + ',,COUNTIFS(Respuestas!B2:B,Invitaciones!A2:A,Respuestas!H2:H,"Sí")))',
-    '=ARRAYFORMULA(IF(' + hay + ',,COUNTIFS(Respuestas!B2:B,Invitaciones!A2:A,Respuestas!H2:H,"No")))',
-    '=ARRAYFORMULA(IF(' + hay + ',,IF(C2:C>0,"✔ Confirmó",IF(D2:D>0,"✘ No asiste","… Sin responder"))))',
-    '=ARRAYFORMULA(IF(' + hay + ',,IFERROR(VLOOKUP(Invitaciones!A2:A,{Respuestas!B2:B,Respuestas!A2:A},2,FALSE),"")))',
-    '=ARRAYFORMULA(IF(' + hay + ',,IFERROR(VLOOKUP(Invitaciones!A2:A,{Respuestas!B2:B,Respuestas!G2:G},2,FALSE),"")))',
-    '=ARRAYFORMULA(IF(' + hay + ',,Invitaciones!E2:E))',
-    '=ARRAYFORMULA(IF(' + hay + ',,"' + SITIO + '?i="&Invitaciones!A2:A))'
-  ]]);
-  est.getRange("F:F").setNumberFormat("dd/mm/yyyy hh:mm");
+  if (filas.length) {
+    // Columnas de texto como texto: un teléfono "+52…" o un nombre con "=" no se vuelven fórmula.
+    [1, 7, 8, 9].forEach(function (k) { est.getRange(2, k, filas.length, 1).setNumberFormat("@"); });
+    est.getRange(2, 1, filas.length, 9).setValues(filas).setBackgrounds(fondos);
+    est.getRange(2, 6, filas.length, 1).setNumberFormat("dd/mm/yyyy hh:mm");
+  }
   est.setFrozenRows(1);
   est.setColumnWidth(1, 260); est.setColumnWidth(5, 130); est.setColumnWidth(9, 330);
-  var col = est.getRange("E2:E");
-  est.setConditionalFormatRules([
-    SpreadsheetApp.newConditionalFormatRule().whenTextStartsWith("✔").setBackground("#DCE8D2").setRanges([col]).build(),
-    SpreadsheetApp.newConditionalFormatRule().whenTextStartsWith("✘").setBackground("#F2D6D3").setRanges([col]).build(),
-    SpreadsheetApp.newConditionalFormatRule().whenTextStartsWith("…").setBackground("#F6F1E7").setRanges([col]).build()
+
+  var res = libro.getSheetByName("Resumen") || libro.insertSheet("Resumen", 1);
+  res.clear();
+  res.getRange("A1:B8").setValues([
+    ["Resumen", "Se actualiza solo (menú Boda → Actualizar si borras filas)"],
+    ["Invitaciones", lista.length],
+    ["Pases en total", tot.pases],
+    ["Invitaciones que ya respondieron", tot.respondieron],
+    ["Invitaciones sin responder", lista.length - tot.respondieron],
+    ["Personas que SÍ asisten", tot.si],
+    ["Personas que NO asisten", tot.no],
+    ["Actualizado", new Date()]
   ]);
-  libro.setActiveSheet(est);
+  res.getRange("B8").setNumberFormat("dd/mm/yyyy hh:mm");
+  res.getRange("A10:C10").setValues([["Sin responder", "Pases", "Lado"]]);
+  if (sinResponder.length) {
+    res.getRange(11, 1, sinResponder.length, 1).setNumberFormat("@");
+    res.getRange(11, 3, sinResponder.length, 1).setNumberFormat("@");
+    res.getRange(11, 1, sinResponder.length, 3).setValues(sinResponder);
+  }
+  else res.getRange("A11").setValue("Todas respondieron");
+  res.getRange("A1").setFontSize(14).setFontWeight("bold");
+  res.getRange("B1").setFontColor("#888888");
+  res.getRange("A10:C10").setFontWeight("bold");
+  res.setColumnWidth(1, 280);
 }
 
 /* ── Fila nueva en Invitaciones (también desde el celular): le pone código ── */
 function onEdit(e) {
   var h = e && e.range && e.range.getSheet();
-  if (!h || h.getName() !== "Invitaciones") return;
+  if (!h) return;
+  if (h.getName() === "Respuestas") return actualizar(h.getParent());
+  if (h.getName() !== "Invitaciones") return;
   var primera = Math.max(e.range.getRow(), 2), ultima = e.range.getLastRow();
-  if (ultima < primera) return;
+  if (ultima < primera) return actualizar(h.getParent());
   var usados = {};
   h.getRange(2, 1, Math.max(h.getLastRow() - 1, 1), 1).getValues()
     .forEach(function (f) { usados[String(f[0]).trim().toLowerCase()] = true; });
@@ -128,6 +182,7 @@ function onEdit(e) {
     h.getRange(primera + k, 1).setNumberFormat("@").setValue(c);
   });
   ponerLinks(h);
+  actualizar(h.getParent());
 }
 
 // Columna F de Invitaciones: link de cada código (vacío si la fila no tiene código)
@@ -203,6 +258,7 @@ function doPost(e) {
       resp.getRange(resp.getLastRow() + 1, 1, filas.length, filas[0].length).setValues(filas);
     }
 
+    try { actualizar(libro); } catch (err) {}   // la respuesta ya quedó guardada
     if (AVISAR_POR_CORREO) avisar(inv, filas);
     return json({ ok: true });
   } finally {

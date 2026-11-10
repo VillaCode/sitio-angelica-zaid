@@ -111,6 +111,10 @@ in the Google Sheets app, without publishing anything:
   Its link appears in column F (`link`) and in the **Estado** tab.
 - **Who has answered:** the **Estado** tab shows ✔ Confirmó / ✘ No asiste / … Sin responder for each
   invitation, with the date, the phone and the link to resend.
+- Estado and Resumen hold plain values written by the script, not formulas (formulas written by the
+  script gave "Error de análisis de fórmula" in a Spanish-language sheet). They refresh on every RSVP,
+  on every edit in Invitaciones or Respuestas, and when the sheet is opened. After deleting rows, use the
+  **Boda → Actualizar Estado y Resumen** menu.
 
 After pasting a new version of the script: run **preparar** once (it rebuilds Estado and Resumen and does
 not touch your answers), then go to Deploy → Manage deployments → ✏️ → **New version** → Deploy.

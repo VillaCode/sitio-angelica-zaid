@@ -489,11 +489,11 @@
   }
 
   /* ─── Copiar CLABE / tarjeta ────────────────────────────── */
-  Array.prototype.forEach.call(document.querySelectorAll("[data-copia]"), function (boton) {
+  Array.prototype.forEach.call(document.querySelectorAll(".copiar[data-copia]"), function (boton) {
     boton.addEventListener("click", function () {
       var origen = document.querySelector(boton.dataset.copia);
       if (!origen) return;
-      var texto = origen.textContent.trim();
+      var texto = origen.textContent.replace(/\s+/g, "");   // se muestra en grupos, se copia sin espacios
       var listo = function () {
         var antes = boton.textContent;
         boton.textContent = "Copiado";

@@ -175,8 +175,9 @@ Content the couple still needs to provide:
 - [x] RSVP deadline: 15 de diciembre de 2026
 - [x] Tornafiesta removed from the itinerary on purpose (2026-11-05): the couple keeps it
       private. Do not add it back.
-- [ ] Vestimenta: "Formal" and the note text are waiting for the couple's confirmation
-- [ ] Decide whether the bank details should stay on a public page
+- [x] Vestimenta: "Formal"; the note says the colours are reserved for "los novios" (owner, 2026-11-09)
+- [x] Bank details: full CLABE and debit card are public on purpose (owner, 2026-11-09). They show in
+      groups of digits; the Copiar buttons copy them without spaces
 - [x] Liverpool (evento 60043251) and Amazon list URLs
 
 Code tasks not done yet:

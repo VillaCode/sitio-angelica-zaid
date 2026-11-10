@@ -35,11 +35,10 @@ img/texturas/       Seamless background tiles
     (`.titulo-seccion`), it loses the T crossbar. Those use `--display-chica`.
   - Sacramento has a lower x-height than the old Parisienne: every `--script` size
     is multiplied by `--script-escala` (1.15). Do the same for new script text.
-  - Readability for older guests (owner, 2026-11-10): the Bodoni Moda face declared as 400 is really
-    the 500 cut, and a same-colour outline thickens the one-weight fonts: `-webkit-text-stroke-width`
-    `--trazo-texto` on body (inherited), `--trazo-display` and `--trazo-script` next to every
-    `font-family: var(--display|--script)`. Add the matching one to new rules. Do not bring back
-    `-webkit-font-smoothing: antialiased`: it thins text on Macs.
+  - Readability for older guests (owner, 2026-11-10): small text is a bit larger (`--t-xs/sm/md`), and a
+    faint same-colour outline thickens Quattrocento (`--trazo-texto` on body, inherited) and Italiana
+    (`--trazo-display`, next to every `font-family: var(--display)`). Keep them faint: a heavier
+    version (Bodoni 500, .03em on Italiana, outline on Sacramento) lost the style and was rejected.
 - Never load anything from a CDN or Google Fonts. Everything must work offline.
 - Images: convert new photos to WebP before adding them. Keep photos ≤ 2200 px wide.
 

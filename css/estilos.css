@@ -2,11 +2,12 @@
    Autoalojadas: el sitio no depende de Google Fonts ni de internet.
    Italiana solo trae el subset latin: alcanza para el español.
    Bodoni Moda se queda solo para --display-chica. */
+/* Bodoni Moda: el corte 500 hace de normal (el 400 se leía delgado en mayúsculas chicas) */
 @font-face{font-family:"Bodoni Moda";font-style:normal;font-weight:400;font-display:swap;
-  src:url("fuentes/bodoni-moda-latin-400-normal.woff2") format("woff2");
+  src:url("fuentes/bodoni-moda-latin-500-normal.woff2") format("woff2");
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
 @font-face{font-family:"Bodoni Moda";font-style:normal;font-weight:400;font-display:swap;
-  src:url("fuentes/bodoni-moda-latin-ext-400-normal.woff2") format("woff2");
+  src:url("fuentes/bodoni-moda-latin-ext-500-normal.woff2") format("woff2");
   unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}
 @font-face{font-family:"Italiana";font-style:normal;font-weight:400;font-display:swap;
   src:url("fuentes/italiana-latin-400-normal.woff2") format("woff2");
@@ -60,11 +61,16 @@
      se multiplica por este factor. */
   --script-escala: 1.15;
   --texto:   "Quattrocento", Georgia, "Times New Roman", serif;
+  /* Grosor extra: un contorno del mismo color engruesa letras que solo tienen
+     un peso. Italiana y Sacramento son de trazo fino; el texto, apenas. */
+  --trazo-texto:   .012em;
+  --trazo-display: .03em;
+  --trazo-script:  .022em;
 
   /* Escala tipográfica fluida */
-  --t-xs:  clamp(.68rem, .64rem + .18vw, .78rem);
-  --t-sm:  clamp(.8rem,  .76rem + .2vw,  .92rem);
-  --t-md:  clamp(.95rem, .9rem  + .25vw, 1.08rem);
+  --t-xs:  clamp(.76rem, .72rem + .18vw, .84rem);
+  --t-sm:  clamp(.88rem, .84rem + .2vw,  .98rem);
+  --t-md:  clamp(1.02rem, .97rem + .25vw, 1.12rem);
   --t-lg:  clamp(1.15rem, 1.05rem + .5vw, 1.45rem);
   --t-xl:  clamp(1.7rem, 1.4rem + 1.5vw, 2.7rem);
   --t-2xl: clamp(2.4rem, 1.6rem + 3.6vw, 5rem);
@@ -98,7 +104,7 @@ body {
   font-size: var(--t-md);
   line-height: 1.75;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: var(--trazo-texto);   /* se hereda; Italiana y Sacramento ponen el suyo */
   text-rendering: optimizeLegibility;
 }
 
@@ -164,6 +170,7 @@ a { color: inherit; }
 
 .rubrica {
   font-family: var(--script);
+  -webkit-text-stroke-width: var(--trazo-script);
   font-size: calc(var(--t-xl) * var(--script-escala));
   line-height: 1;
   color: var(--marfil);
@@ -246,6 +253,7 @@ a { color: inherit; }
 
 .nav__marca {
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: 1.15rem; letter-spacing: .1em;
   text-decoration: none; color: var(--marfil);
   margin-right: auto;
@@ -346,12 +354,14 @@ a { color: inherit; }
 
 .portada__gui {
   font-family: var(--script);
+  -webkit-text-stroke-width: var(--trazo-script);
   font-size: calc(clamp(1.5rem, 1rem + 2.2vw, 2.6rem) * var(--script-escala));
   margin: 0 0 -.15em;
 }
 
 .portada__nombres {
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: var(--t-3xl);
   letter-spacing: .045em;
   text-transform: uppercase;
@@ -362,6 +372,7 @@ a { color: inherit; }
 .portada__amp {
   display: block;
   font-family: var(--script);
+  -webkit-text-stroke-width: var(--trazo-script);
   font-size: calc(.42em * var(--script-escala));
   text-transform: none;
   letter-spacing: 0;
@@ -455,6 +466,7 @@ a { color: inherit; }
 .cuenta__num {
   display: block;
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: clamp(1.9rem, 1.1rem + 3vw, 3.1rem);
   line-height: 1; color: var(--vino);
   font-variant-numeric: tabular-nums;
@@ -507,6 +519,7 @@ a { color: inherit; }
 
 .dedicatoria__verso {
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: var(--t-lg);
   line-height: 1.5;
   letter-spacing: .04em;
@@ -526,6 +539,7 @@ a { color: inherit; }
 }
 .dedicatoria__cita p {
   font-family: var(--script);
+  -webkit-text-stroke-width: var(--trazo-script);
   font-size: calc(var(--t-xl) * var(--script-escala));
   line-height: 1.2; margin: 0 0 .2em;
 }
@@ -668,6 +682,7 @@ a { color: inherit; }
 
 .etiqueta__nombre {
   font-family: var(--script);
+  -webkit-text-stroke-width: var(--trazo-script);
   font-size: calc(clamp(2rem, 1.5rem + 1.8vw, 2.8rem) * var(--script-escala));
   line-height: 1.1;
   color: var(--olivo-hondo);
@@ -761,6 +776,7 @@ a { color: inherit; }
 }
 .etiqueta__hora {
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: clamp(1.1rem, 8.5cqi, 1.6rem);
   line-height: 1;
   letter-spacing: .08em; margin: 0 0 .6rem;
@@ -810,6 +826,7 @@ a { color: inherit; }
 .vestimenta__texto { text-shadow: 0 1px 20px rgba(35,33,24,.5); }
 .vestimenta__nivel {
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: var(--t-xl);
   letter-spacing: .5em; text-indent: .5em;
   text-transform: uppercase;
@@ -1093,6 +1110,7 @@ a { color: inherit; }
 /* Nombre del invitado, solo si el link trae ?nombre= */
 .confirmar__para {
   font-family: var(--script);
+  -webkit-text-stroke-width: var(--trazo-script);
   font-size: calc(var(--t-xl) * var(--script-escala));
   line-height: 1.2; margin: .4rem 0 0;
   overflow-wrap: anywhere;
@@ -1101,6 +1119,7 @@ a { color: inherit; }
 .pases { margin: 1.8rem 0 2rem; }
 .pases__num {
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: clamp(3rem, 2rem + 5vw, 5.5rem);
   line-height: 1; vertical-align: -.04em;
 }
@@ -1272,6 +1291,7 @@ a { color: inherit; }
 }
 .pie__firma {
   font-family: var(--script);
+  -webkit-text-stroke-width: var(--trazo-script);
   font-size: calc(var(--t-xl) * var(--script-escala));
   margin: 0 0 .2em;
 }
@@ -1305,6 +1325,7 @@ a { color: inherit; }
 
 .cuenta__sinjs {
   font-family: var(--display);
+  -webkit-text-stroke-width: var(--trazo-display);
   font-size: var(--t-lg);
   color: var(--vino);
   letter-spacing: .12em;

@@ -23,12 +23,20 @@
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/sacramento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="css/fuentes/quattrocento-latin-400-normal.woff2" crossorigin>
 <link rel="preload" as="image" href="img/fotos/hero.webp" fetchpriority="high">
-<link rel="stylesheet" href="css/estilos.css?v=2026-11-10a">
+<link rel="stylesheet" href="css/estilos.css?v=2026-11-11a">
 
 <script>
   /* Mejora progresiva: la clase se pone ANTES de pintar, así que si el
      JavaScript no corre, todo el contenido queda visible tal cual. */
   document.documentElement.className += " con-js";
+  /* Red de seguridad: si app.js no termina (no cargó, bloqueador, navegador viejo),
+     .con-js dejaría todo en opacity 0 y la página se vería vacía. A los 4 s se quita. */
+  setTimeout(function () {
+    if (!window.azListo) {
+      var r = document.documentElement;
+      r.className = r.className.replace(/\bcon-js\b/g, "");
+    }
+  }, 4000);
 </script>
 </head>
 
@@ -468,7 +476,7 @@
   <button class="visor__flecha visor__flecha--der" id="visorSig" type="button" aria-label="Foto siguiente">&#8250;</button>
 </div>
 
-<script src="js/invitaciones.js?v=2026-11-10a" defer></script>
-<script src="js/app.js?v=2026-11-10a" defer></script>
+<script src="js/invitaciones.js?v=2026-11-11a" defer></script>
+<script src="js/app.js?v=2026-11-11a" defer></script>
 </body>
 </html>

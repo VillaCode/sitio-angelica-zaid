@@ -731,4 +731,5 @@
     }).catch(mal);
   }
 
+  window.azListo = true;   // el <head> no tiene que quitar .con-js (ver index.html)
 })();

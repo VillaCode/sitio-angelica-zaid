@@ -1,8 +1,14 @@
 # Angélica & Zaid — wedding site
 
 Static one-page wedding invitation. No build step, no framework, no dependencies.
-Deployed to GitHub Pages from the `main` branch root: every push to `main` goes live
-in about a minute. Live URL: https://villacode.github.io/sitio-angelica-zaid/
+Every push to `main` goes live in about a minute on two hosts, both from the `main` branch root:
+- **Cloudflare Pages, the main URL: https://boda-angelicayzaid.pages.dev/** (project connected to the
+  GitHub repo; no build command, output `/`). Invitation links, og:url/og:image, `invitaciones.py` and
+  `registro.gs` (`SITIO`) all use it.
+- GitHub Pages: https://villacode.github.io/sitio-angelica-zaid/ still works for links sent earlier. Some
+  Mexican mobile carriers cannot reach GitHub Pages at all (connection timeout, confirmed 2026-11-11 with
+  pages.github.com), which is why Cloudflare became the main host. Unknown paths on Cloudflare return
+  index.html with 200, so private paths are not exposed (they are not in the repo anyway).
 Work happens on branches (e.g. `cambios-novios`); nothing is merged or pushed to `main`
 until the owner says "publica".
 

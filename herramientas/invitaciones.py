@@ -23,7 +23,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 LISTA = RAIZ / "referencia" / "invitados.csv"
 SALIDA = RAIZ / "js" / "invitaciones.js"
 SHEETS = RAIZ / "referencia" / "para-sheets.csv"   # lista para la hoja de Google (ver REGISTRO.md)
-SITIO = "https://villacode.github.io/sitio-angelica-zaid/"
+SITIO = "https://boda-angelicayzaid.pages.dev/"
 
 SAL = b"angelica-zaid-2026"      # igual que SAL_CODIGO en app.js
 VUELTAS = 60000                  # igual que VUELTAS_CODIGO en app.js

@@ -26,7 +26,7 @@
 
 var AVISAR_POR_CORREO = true;   // un correo por cada confirmación
 var PASES_MAX = 10;
-var SITIO = "https://villacode.github.io/sitio-angelica-zaid/";
+var SITIO = "https://boda-angelicayzaid.pages.dev/";
 var ALFABETO = "abcdefghjkmnpqrstuvwxyz23456789";   // igual que herramientas/invitaciones.py
 
 var ENC_RESPUESTAS = ["Fecha", "Código", "Invitación", "Pases", "#", "Nombre", "Teléfono", "Asiste", "Mensaje"];

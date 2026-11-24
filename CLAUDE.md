@@ -9,6 +9,9 @@ Every push to `main` goes live in about a minute on two hosts, both from the `ma
   Mexican mobile carriers cannot reach GitHub Pages at all (connection timeout, confirmed 2026-11-11 with
   pages.github.com), which is why Cloudflare became the main host. Unknown paths on Cloudflare return
   index.html with 200, so private paths are not exposed (they are not in the repo anyway).
+- After publishing, check BOTH hosts. Cloudflare silently stopped deploying for 12 days because the
+  project got "disconnected from your Git account" (fixed 2026-11-23 by re-authorising the Cloudflare
+  GitHub app). If pages.dev lags, ask the owner to look at the project's Deployments tab.
 Work happens on branches (e.g. `cambios-novios`); nothing is merged or pushed to `main`
 until the owner says "publica".
 

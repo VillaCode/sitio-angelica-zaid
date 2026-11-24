@@ -182,7 +182,7 @@ There is no test suite. Before pushing, at minimum:
 
 Content the couple still needs to provide:
 - [x] WhatsApp number in `js/app.js` (`WHATSAPP` = 526671020246, given by the owner on 2026-10-15)
-- [x] RSVP deadline: 15 de diciembre de 2026
+- [x] RSVP deadline: 1 de diciembre de 2026 (moved from the 15th on 2026-11-23; copy says "a más tardar el")
 - [x] Tornafiesta removed from the itinerary on purpose (2026-11-05): the couple keeps it
       private. Do not add it back.
 - [x] Vestimenta: "Formal"; the note says the colours are reserved for "los novios" (owner, 2026-11-09)
